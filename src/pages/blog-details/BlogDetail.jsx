@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { Clock } from "lucide-react";
 import axios from "axios";
 import GlobalHero from "../../components/GlobalHero";
+import axiosInstance from "../../api/axiosInstance";
 
 const BlogDetail = () => {
   const { slug } = useParams();
@@ -13,8 +14,8 @@ const BlogDetail = () => {
   useEffect(() => {
     const fetchBlog = async () => {
       try {
-        const res = await axios.get(
-          `http://localhost:5000/api/blogs/${slug}`
+        const res = await axiosInstance.get(
+          `/blogs/${slug}`
         );
         setBlog(res.data);
         setLoading(false);

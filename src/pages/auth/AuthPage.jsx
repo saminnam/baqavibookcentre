@@ -18,8 +18,8 @@ const AuthPage = () => {
     e.preventDefault();
     try {
       const url = isLogin
-        ? "http://localhost:5000/api/auth/login"
-        : "http://localhost:5000/api/auth/signup";
+        ? "https://e-commerce-app-backend-seven-henna.vercel.app/api/auth/login"
+        : "https://e-commerce-app-backend-seven-henna.vercel.app/api/auth/signup";
 
       const res = await axios.post(url, form);
       login(res.data);

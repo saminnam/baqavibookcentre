@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import OfferHeroSection from "./OfferHeroSection";
+import axiosInstance from "../../api/axiosInstance";
 
 const Hero = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -16,7 +17,7 @@ const Hero = () => {
 
   const fetchHeroSlides = async () => {
     try {
-      const { data } = await axios.get("http://localhost:5000/api/hero-slides");
+      const { data } = await axiosInstance.get("/hero-slides");
       setHeroSlides(data);
     } catch (error) {
       console.error("Failed to fetch hero slides:", error);

@@ -39,7 +39,7 @@ const ContactForm = () => {
   useEffect(() => {
     const fetchContactInfo = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/contact/info");
+        const res = await fetch("https://e-commerce-app-backend-seven-henna.vercel.app/api/contact/info");
         if (res.ok) {
           const data = await res.json();
           setContactInfo(data);
@@ -55,7 +55,7 @@ const ContactForm = () => {
 
   const onSubmit = async (data) => {
     try {
-      const res = await fetch("http://localhost:5000/api/contact/enquiry", {
+      const res = await fetch("https://e-commerce-app-backend-seven-henna.vercel.app/api/contact/enquiry", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),

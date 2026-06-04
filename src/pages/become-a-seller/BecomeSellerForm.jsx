@@ -4,6 +4,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { Send } from "lucide-react";
+import axiosInstance from "../../api/axiosInstance";
 
 const sellerSchema = z.object({
   fullName: z.string().min(3, "Name is required"),
@@ -32,7 +33,7 @@ export default function BecomeSellerForm() {
 
   const onSubmit = async (data) => {
     try {
-      const res = await axios.post("http://localhost:5000/api/seller", data);
+      const res = await axiosInstance.post("/seller", data);
       alert(res.data.message);
 
       reset(); // ✅ clears all inputs

@@ -6,7 +6,7 @@ export default function Coupon() {
 
   const verify = async () => {
     await axios.post(
-      "http://localhost:5000/api/reseller/verify-coupon",
+      " https://e-commerce-app-backend-seven-henna.vercel.app/api/reseller/verify-coupon",
       { couponCode: coupon },
       {
         headers: {

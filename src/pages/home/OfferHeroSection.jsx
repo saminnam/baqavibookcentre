@@ -4,6 +4,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
+import axiosInstance from "../../api/axiosInstance";
 
 const OfferHeroSection = () => {
   const [heroOfferSlides, setHeroOfferSlides] = useState([]);
@@ -11,7 +12,7 @@ const OfferHeroSection = () => {
 
   const fetchOfferHeroSlides = async () => {
     try {
-      const { data } = await axios.get("http://localhost:5000/api/offer-hero-slides");
+      const { data } = await axiosInstance.get("/offer-hero-slides");
       setHeroOfferSlides(data);
     } catch (error) {
       console.error("Failed to fetch offer hero slides:", error);
