@@ -1,11 +1,50 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
-import { heroOfferSlides } from "../../data/heroSlides"; // adjust path if needed
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 
 const OfferHeroSection = () => {
+  const [heroOfferSlides, setHeroOfferSlides] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchOfferHeroSlides = async () => {
+    try {
+      const { data } = await axios.get("http://localhost:5000/api/offer-hero-slides");
+      setHeroOfferSlides(data);
+    } catch (error) {
+      console.error("Failed to fetch offer hero slides:", error);
+      setHeroOfferSlides([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchOfferHeroSlides();
+  }, []);
+
+  if (loading) {
+    return (
+      <section className="overflow-hidden m-1">
+        <div className="flex items-center justify-center h-[500px]">
+          <div className="text-gray-500">Loading offer slides...</div>
+        </div>
+      </section>
+    );
+  }
+
+  if (heroOfferSlides.length === 0) {
+    return (
+      <section className="overflow-hidden m-1">
+        <div className="flex items-center justify-center h-[500px]">
+          <div className="text-gray-500">No offer slides available</div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="overflow-hidden m-1">
       <Swiper
@@ -13,30 +52,28 @@ const OfferHeroSection = () => {
         autoplay={{ delay: 2500, disableOnInteraction: false }}
         loop={true}
         slidesPerView={2}
-        spaceBetween={5} // 👈 Adds gap between slides
+        spaceBetween={5}
         breakpoints={{
-          0: { direction: "horizontal", spaceBetween: 10 }, // mobile
-          768: { direction: "vertical", spaceBetween: 5 }, // tablet & desktop
+          0: { direction: "horizontal", spaceBetween: 10 },
+          768: { direction: "vertical", spaceBetween: 5 },
         }}
         modules={[Autoplay]}
         className="h-auto md:h-[500px]"
         speed={600}
       >
         {heroOfferSlides.map((item) => (
-          <SwiperSlide key={item.id}>
+          <SwiperSlide key={item._id}>
             <div className="relative group bg-[url('./assets/images/bg-pattern/shopping-pattern.avif')] bg-cover bg-center overflow-hidden">
-              {/* 🔹 Overlay background color */}
               <div
                 className={`absolute inset-0 opacity-90 ${
-                  item.id % 3 === 0
-                    ? "bg-[#030050db]" // blue
-                    : item.id % 3 === 1
-                    ? "bg-[#e5b336e0]" // yellow
-                    : "bg-[#000000d0]" // third color
+                  item._id % 3 === 0
+                    ? "bg-[#030050db]"
+                    : item._id % 3 === 1
+                    ? "bg-[#e5b336e0]"
+                    : "bg-[#000000d0]"
                 }`}
               ></div>
 
-              {/* 🔹 Content */}
               <div className="relative z-10 flex justify-between items-center px-5 md:py-10 lg:py-12">
                 <div className="space-y-3 w-[65%]">
                   <h2 className="text-white font-semibold lg:text-2xl text-xl">

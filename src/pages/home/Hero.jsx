@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { heroSlides } from "../../data/heroSlides";
+import axios from "axios";
 import OfferHeroSection from "./OfferHeroSection";
 
 const Hero = () => {
@@ -11,6 +11,25 @@ const Hero = () => {
   const startX = useRef(0);
   const deltaX = useRef(0);
   const isDragging = useRef(false);
+  const [heroSlides, setHeroSlides] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchHeroSlides = async () => {
+    try {
+      const { data } = await axios.get("http://localhost:5000/api/hero-slides");
+      setHeroSlides(data);
+    } catch (error) {
+      console.error("Failed to fetch hero slides:", error);
+      // Fallback to empty array if API fails
+      setHeroSlides([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchHeroSlides();
+  }, []);
 
   // Detect screen size
   useEffect(() => {
@@ -42,7 +61,7 @@ const Hero = () => {
     setCurrent(index);
 
     intervalRef.current = setTimeout(() => {
-      goToSlide((index + 1) % heroSlides.length);
+      goToSlide((index + 1) % (heroSlides.length || 1));
     }, 3000);
   };
 
@@ -65,9 +84,9 @@ const Hero = () => {
     if (!isDragging.current) return;
     isDragging.current = false;
     if (deltaX.current > 50) {
-      goToSlide((current - 1 + heroSlides.length) % heroSlides.length);
+      goToSlide((current - 1 + (heroSlides.length || 1)) % (heroSlides.length || 1));
     } else if (deltaX.current < -50) {
-      goToSlide((current + 1) % heroSlides.length);
+      goToSlide((current + 1) % (heroSlides.length || 1));
     } else {
       goToSlide(current);
     }
@@ -99,36 +118,48 @@ const Hero = () => {
   return (
     <section className="flex md:flex-row flex-col">
       <div className="slider-container overflow-hidden md:w-[55%] w-full">
-        <div
-          id="slides"
-          ref={slidesRef}
-          className="slides"
-          onMouseDown={(e) => handleStart(e.pageX)}
-          onTouchStart={(e) => handleStart(e.touches[0].clientX)}
-        >
-          {heroSlides.map((slide) => (
-            <div className="slide" key={slide.id}>
-              <img
-                src={isMobile ? slide.mobileImg : slide.desktopImg}
-                alt={slide.title}
-                className="object-contain h-full md:h-[500px]"
-              />
-            </div>
-          ))}
-        </div>
-
-        <div className="indicators">
-          {heroSlides.map((_, i) => (
+        {loading ? (
+          <div className="flex items-center justify-center h-[500px]">
+            <div className="text-gray-500">Loading slides...</div>
+          </div>
+        ) : heroSlides.length === 0 ? (
+          <div className="flex items-center justify-center h-[500px]">
+            <div className="text-gray-500">No slides available</div>
+          </div>
+        ) : (
+          <>
             <div
-              key={i}
-              ref={(el) => (indicatorsRef.current[i] = el)}
-              className={`indicator ${i === current ? "active" : ""}`}
-              onClick={() => goToSlide(i)}
+              id="slides"
+              ref={slidesRef}
+              className="slides"
+              onMouseDown={(e) => handleStart(e.pageX)}
+              onTouchStart={(e) => handleStart(e.touches[0].clientX)}
             >
-              <div className="progress"></div>
+              {heroSlides.map((slide) => (
+                <div className="slide" key={slide._id}>
+                  <img
+                    src={isMobile ? slide.mobileImg : slide.desktopImg}
+                    alt={slide.title}
+                    className="object-contain h-full md:h-[500px]"
+                  />
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+
+            <div className="indicators">
+              {heroSlides.map((_, i) => (
+                <div
+                  key={i}
+                  ref={(el) => (indicatorsRef.current[i] = el)}
+                  className={`indicator ${i === current ? "active" : ""}`}
+                  onClick={() => goToSlide(i)}
+                >
+                  <div className="progress"></div>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
       </div>
       <div className="md:w-[45%] lg:block hidden w-full overflow-hidden">
         <OfferHeroSection />

@@ -1,7 +1,6 @@
 import React, { useEffect, lazy, Suspense } from "react";
 import "./assets/styles/global.css";
 import {
-  BrowserRouter as Router,
   Routes,
   Route,
   useLocation,
