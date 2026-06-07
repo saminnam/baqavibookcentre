@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "https://e-commerce-app-backend-seven-henna.vercel.app/api",
+  baseURL: "https://e-commerce-app-backend-livid.vercel.app/api",
 });
 
 axiosInstance.interceptors.request.use((config) => {
