@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "https://e-commerce-app-backend-livid.vercel.app/api",
+  baseURL: "https://e-commerce-app-backend1.vercel.app/api", // Updated to the new backend URL
 });
 
 axiosInstance.interceptors.request.use((config) => {

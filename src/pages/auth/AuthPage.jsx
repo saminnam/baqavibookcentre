@@ -18,8 +18,8 @@ const AuthPage = () => {
     e.preventDefault();
     try {
       const url = isLogin
-        ? "https://e-commerce-app-backend-seven-henna.vercel.app/api/auth/login"
-        : "https://e-commerce-app-backend-seven-henna.vercel.app/api/auth/signup";
+        ? "https://e-commerce-app-backend1.vercel.app/api/auth/login"
+        : "https://e-commerce-app-backend1.vercel.app/api/auth/signup";
 
       const res = await axios.post(url, form);
       login(res.data);

@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 const BlogsCard = () => {
   const [blogs, setBlogs] = useState([])
   useEffect(() => {
-  fetch("https://e-commerce-app-backend-seven-henna.vercel.app/api/blogs")
+  fetch("https://e-commerce-app-backend1.vercel.app/api/blogs")
     .then((res) => res.json())
     .then((data) => setBlogs(data));
 }, []);

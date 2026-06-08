@@ -45,8 +45,16 @@ const Hero = () => {
     const slides = slidesRef.current;
     const indicators = indicatorsRef.current;
 
+    // Guard against null or empty indicators
+    if (!slides || !indicators || indicators.length === 0 || heroSlides.length === 0) {
+      return;
+    }
+
     indicators.forEach((ind, i) => {
+      if (!ind) return; // Skip if indicator doesn't exist
       const progress = ind.querySelector(".progress");
+      if (!progress) return; // Skip if progress element doesn't exist
+      
       ind.classList.toggle("active", i === index);
       progress.style.transition = "none";
       progress.style.width = "0%";
@@ -95,6 +103,8 @@ const Hero = () => {
   };
 
   useEffect(() => {
+    if (heroSlides.length === 0) return; // Don't start autoplay if no slides
+    
     goToSlide(0);
 
     const handleMouseMove = (e) => handleMove(e.pageX);
@@ -114,7 +124,7 @@ const Hero = () => {
       window.removeEventListener("touchmove", handleTouchMove);
       window.removeEventListener("touchend", handleTouchEnd);
     };
-  }, []);
+  }, [heroSlides]);
 
   return (
     <section className="flex md:flex-row flex-col">
