@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "react-toastify";
 import {
   Send,
   MapPin,
@@ -62,14 +63,14 @@ const ContactForm = () => {
       });
 
       if (res.ok) {
-        alert("Message sent successfully!");
+        toast.success("Message sent successfully!");
         reset();
       } else {
-        alert("Failed to send message");
+        toast.error("Failed to send message");
       }
     } catch (error) {
       console.error(error);
-      alert("Something went wrong");
+      toast.error("Something went wrong");
     }
   };
 

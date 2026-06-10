@@ -4,6 +4,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { Send } from "lucide-react";
+import { toast } from "react-toastify";
 import axiosInstance from "../../api/axiosInstance";
 
 const sellerSchema = z.object({
@@ -34,12 +35,12 @@ export default function BecomeSellerForm() {
   const onSubmit = async (data) => {
     try {
       const res = await axiosInstance.post("/seller", data);
-      alert(res.data.message);
+      toast.success(res.data.message || "Seller request submitted successfully");
 
       reset(); // ✅ clears all inputs
     } catch (error) {
       console.error(error);
-      alert("Something went wrong. Please try again.");
+      toast.error("Something went wrong. Please try again.");
     }
   };
 

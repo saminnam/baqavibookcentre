@@ -12,6 +12,7 @@ const StoreContextProvider = (props) => {
 
   // 🟢 Data States
   const [products, setProducts] = useState([]); // Replaces static product_list
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   
   // UI & Cart States
@@ -50,9 +51,28 @@ const StoreContextProvider = (props) => {
     }
   };
 
+  const fetchCategories = async () => {
+    try {
+      const response = await axiosInstance.get("/categories");
+      const categoriesData = response.data || [];
+      if (Array.isArray(categoriesData) && categoriesData.length > 0) {
+        setCategories(categoriesData.map((category) => category.name));
+      } else {
+        setCategories([...new Set(products.map((product) => product.category).filter(Boolean))]);
+      }
+    } catch (error) {
+      console.error("Failed to fetch categories:", error);
+      setCategories([...new Set(products.map((product) => product.category).filter(Boolean))]);
+    }
+  };
+
   useEffect(() => {
     fetchProducts();
   }, []);
+
+  useEffect(() => {
+    fetchCategories();
+  }, [products]);
 
   // 2️⃣ CART LOGIC - Sync with backend for logged-in users
   const fetchCart = async () => {
@@ -173,14 +193,15 @@ const StoreContextProvider = (props) => {
     return filtered;
   }, [products, selectedCategory, priceRange, sortOrder, debouncedFilterSearch]);
 
-  const categories = ["All", ...new Set(products.map((p) => p.category))];
+  const categoryOptions = ["All", ...new Set(categories)];
 
   const contextValue = {
     menuOpen, setMenuOpen,
     showFilter, setShowFilter,
+    products,
     product_list: products, // Kept key name 'product_list' so your components don't break
     filteredProducts,
-    categories,
+    categories: categoryOptions,
     clearCart,
     cartItems,
     addToCart,
