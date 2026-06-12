@@ -69,8 +69,9 @@ const ProductDetail = () => {
                 {product.author && (
                   <div className="flex items-center gap-2">
                     <span className="font-bold text-slate-900 uppercase text-[11px] tracking-wider">
-                      Author:
+                      Brand:
                     </span>
+
                     <span className="text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md">
                       {product.author}
                     </span>
