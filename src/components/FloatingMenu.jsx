@@ -8,7 +8,7 @@ const FloatingMenu = () => {
     useContext(StoreContext);
 
   return (
-    <div className="md:hidden block fixed bottom-2 left-1/2 -translate-x-1/2 w-[90%] max-w-md bg-[#11182575]/30 backdrop-blur-2xl text-white  border border-white/20 rounded-full flex justify-around py-3 px-2 z-40">
+    <div className="md:hidden block fixed bottom-0 left-1/2 -translate-x-1/2 w-full bg-[#11182575]/30 backdrop-blur-2xl text-white  border border-white/20 flex justify-around py-3 px-2 z-40">
       {/* Menu */}
       <button
         onClick={() => setMenuOpen(!menuOpen)}
