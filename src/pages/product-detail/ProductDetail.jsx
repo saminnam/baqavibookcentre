@@ -102,14 +102,14 @@ const ProductDetail = () => {
             {/* Price */}
             <div className="flex items-center gap-3">
               <p className="text-3xl font-bold text-[#111825]">
-                ₹{product.price}
+                ₹{Number(product.price || 0).toLocaleString("en-IN")}
               </p>
               {product.mrp && (
                 <>
-                  <p className="text-gray-400 line-through">₹{product.mrp}</p>
+                  <p className="text-gray-400 line-through">₹{Number(product.mrp || 0).toLocaleString("en-IN")}</p>
                   <p className="text-green-600 font-semibold">
                     {Math.round(
-                      ((product.mrp - product.price) / product.mrp) * 100,
+                      ((Number(product.mrp || 0) - Number(product.price || 0)) / Number(product.mrp || 1)) * 100,
                     )}
                     % off
                   </p>

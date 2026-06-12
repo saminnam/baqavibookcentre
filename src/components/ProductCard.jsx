@@ -25,7 +25,7 @@ const ProductCard = ({ product }) => {
           </span>
         </div>
       </Link>
-      <p className="text-gray-700 mt-1 mb-2">₹{product.price}</p>
+      <p className="text-gray-700 mt-1 mb-2">₹{Number(product.price || 0).toLocaleString("en-IN")}</p>
       <button
         onClick={() => addToCart(product)}
         disabled={!inStock}

@@ -69,10 +69,10 @@ const RelatedProducts = ({ category, currentProductId }) => {
                         <div className="flex md:mt-0 mt-1 flex-col gap-1">
                           <div className="flex gap-2">
                             <p className="text-gray-800 text-[12px] md:text-[15px] font-semibold">
-                              ₹{item.price}
+                              ₹{Number(item.price || 0).toLocaleString("en-IN")}
                             </p>
                             <p className="text-red-500 text-[12px] md:text-[15px] line-through">
-                              ₹{item.mrp}
+                              ₹{Number(item.mrp || 0).toLocaleString("en-IN")}
                             </p>
                           </div>
                           <div className="flex items-center gap-[1.3px] 2xl:gap-1">

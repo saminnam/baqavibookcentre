@@ -104,7 +104,7 @@ const ProductListPage = () => {
                       <div className="flex md:mt-0 mt-1 flex-col gap-1">
                         <div className="flex gap-2">
                           <p className="text-gray-800 text-[12px] md:text-[15px] font-semibold">
-                            ₹{product.price}
+                            ₹{Number(product.price || 0).toLocaleString("en-IN")}
                             {/* ₹{product.finalPrice} */}
                           </p>
                           <p className="text-red-500 text-[12px] md:text-[15px] line-through">
