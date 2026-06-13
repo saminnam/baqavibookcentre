@@ -74,7 +74,7 @@ const CategorySwiperSection = () => {
             >
               {categoryProducts.map((product) => (
                 <SwiperSlide key={product._id}>
-                  <div className="md:border content-font h-max md:hover:border-[#e5b236] group overflow-hidden bg-white md:border-gray-200 relative rounded-lg p-3">
+                  <div className="border content-font h-max md:hover:border-[#e5b236] group overflow-hidden bg-white md:border-gray-200 relative rounded-lg p-3">
                     <div>
                       <Link to={`/product/${product.slug}`}>
                         <div className="overflow-hidden">
