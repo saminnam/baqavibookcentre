@@ -76,9 +76,6 @@ const ExploreCategory = () => {
                           alt={category}
                         />
                       ) : (
-                        // <div className="w-full h-full flex items-center justify-center">
-                        //   <span className="text-2xl md:text-3xl">📦</span>
-                        // </div>
                         <img
                           className="w-full h-full rounded-lg transition-transform duration-300 group-hover:scale-105 object-cover"
                           src={"https://previews.123rf.com/images/ionutparvu/ionutparvu1612/ionutparvu161201044/67602567-category-stamp-sign-text-word-logo-red.jpg"}

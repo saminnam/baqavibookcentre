@@ -12,6 +12,12 @@ const ProductDetail = () => {
   const { product_list, addToCart } = useContext(StoreContext);
   const product = product_list.find((p) => p.slug === slug);
   const [selectedImg, setSelectedImg] = useState(product?.images?.[0]);
+
+  // ✅ Reset selected image when changing product (related products click)
+  useEffect(() => {
+    setSelectedImg(product?.images?.[0]);
+  }, [product]);
+
   // ✅ Set the product name in the browser tab
   useEffect(() => {
     if (product?.name) {
@@ -47,11 +53,25 @@ const ProductDetail = () => {
             </div>
 
             <div className="flex-1">
-              <img
-                src={selectedImg}
-                alt={product.name}
-                className="w-full rounded-lg object-contain"
-              />
+              <div className="relative rounded-lg overflow-hidden">
+                <img
+                  src={selectedImg}
+                  alt={product.name}
+                  className={`w-full rounded-lg object-contain transition ${
+                    product?.status === "inactive"
+                      ? "blur-[2px] opacity-70 scale-[1.02]"
+                      : ""
+                  }`}
+                />
+
+                {product?.status === "inactive" && (
+                  <div className="absolute inset-0 bg-slate-900/20 flex items-center justify-center">
+                    <span className="rounded-full bg-slate-900/75 px-5 py-2 text-sm font-bold text-white backdrop-blur">
+                      Currently no available
+                    </span>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 
@@ -120,10 +140,17 @@ const ProductDetail = () => {
             {/* Add to Cart */}
             <div className="flex gap-3 pt-4 content-font">
               <button
-                onClick={() => addToCart(product)}
-                className="bg-[#111825] cursor-pointer flex gap-2 items-center text-white px-5 py-2 rounded hover:bg-[#E5B236] transition"
+                onClick={() =>
+                  product?.status === "inactive" ? null : addToCart(product)
+                }
+                disabled={product?.status === "inactive"}
+                className={`bg-[#111825] cursor-pointer flex gap-2 items-center text-white px-5 py-2 rounded hover:bg-[#E5B236] transition ${
+                  product?.status === "inactive"
+                    ? "opacity-60 cursor-not-allowed hover:bg-[#111825]"
+                    : ""
+                }`}
               >
-                <ShoppingCart size={20} /> <span>Add to Cart</span>
+                <ShoppingCart size={20} /> <span>{product?.status === "inactive" ? "Product not available" : "Add to Cart"}</span>
               </button>
             </div>
           </div>

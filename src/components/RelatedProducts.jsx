@@ -13,7 +13,7 @@ const RelatedProducts = ({ category, currentProductId }) => {
 
   // Filter related products by category (excluding current one)
   const relatedProducts = product_list.filter(
-    (p) => p.category === category && p._id !== currentProductId
+    (p) => p.category === category && p._id !== currentProductId,
   );
 
   if (relatedProducts.length === 0) return null;
@@ -51,7 +51,7 @@ const RelatedProducts = ({ category, currentProductId }) => {
             : // ✅ Show actual products when loaded
               relatedProducts.map((item) => (
                 <SwiperSlide key={item._id}>
-                  <div className="md:border content-font hover:border-[#e5b236] group overflow-hidden bg-white border-gray-200 pb-5 md:pb-10 relative rounded-lg md:p-4">
+                  <div className="md:border content-font hover:border-[#e5b236] group overflow-hidden bg-white border-gray-200 relative rounded-lg md:p-4">
                     <div>
                       <Link to={`/product/${item.slug}`}>
                         <div className="overflow-hidden">
@@ -62,7 +62,7 @@ const RelatedProducts = ({ category, currentProductId }) => {
                           />
                         </div>
                       </Link>
-                      <div className="md:space-y-1 mt-4 mb-8">
+                      <div className="md:space-y-1 mt-4">
                         <h3 className="text-[12px] md:text-[16px] truncate w-[120px] md:w-[160px] 2xl:w-[200px]">
                           {item.name}
                         </h3>
@@ -75,25 +75,33 @@ const RelatedProducts = ({ category, currentProductId }) => {
                               ₹{Number(item.mrp || 0).toLocaleString("en-IN")}
                             </p>
                           </div>
-                          <div className="flex items-center gap-[1.3px] 2xl:gap-1">
-                            {Array.from({ length: 5 }, (_, i) => (
-                              <Star
-                                key={i}
-                                size={14}
-                                className={
-                                  i < item.rating
-                                    ? "text-yellow-500"
-                                    : "text-gray-300"
-                                }
-                              />
-                            ))}
+                          <div className="flex justify-between items-center">
+                            <div className="flex items-center gap-[1.3px] 2xl:gap-1">
+                              {Array.from({ length: 5 }, (_, i) => (
+                                <Star
+                                  key={i}
+                                  size={14}
+                                  className={
+                                    i < item.rating
+                                      ? "text-yellow-500"
+                                      : "text-gray-300"
+                                  }
+                                />
+                              ))}
+                            </div>
+                            <button
+                              onClick={() => addToCart(item)}
+                              className="flex cursor-pointer items-center border  border-slate-[#111825] justify-center text-[#111825] p-1 shadow-md bg-white rounded transition"
+                            >
+                              <Plus className="w-3 transition-transform duration-300 hover:rotate-180 h-3 md:w-5 md:h-5" />
+                            </button>
                           </div>
                         </div>
                       </div>
                     </div>
 
                     {/* Buttons */}
-                    <div className="absolute bottom-3 md:bottom-5 w-full left-1/2 md:px-4 transform -translate-x-1/2">
+                    {/* <div className="absolute bottom-3 md:bottom-5 w-full left-1/2 md:px-4 transform -translate-x-1/2">
                       <div className="flex items-center w-full justify-between">
                         <Link
                           to={`/product/${item.slug}`}
@@ -109,7 +117,7 @@ const RelatedProducts = ({ category, currentProductId }) => {
                           <Plus className="w-3 transition-transform duration-300 hover:rotate-180 h-3 md:w-5 md:h-5" />
                         </button>
                       </div>
-                    </div>
+                    </div> */}
 
                     {/* Discount tag */}
                     {item.discount > 0 && (

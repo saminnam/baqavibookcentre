@@ -75,28 +75,49 @@ const ProductListPage = () => {
 
         {/* Product Grid Section */}
         <div>
-          <div className="grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-2 md:gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 md:gap-6">
             {loading ? (
               Array.from({ length: 15 }).map((_, i) => (
                 <ProductCardSkeleton key={i} />
               ))
             ) : currentProducts.length > 0 ? (
-              currentProducts.map((product) => (
-                <div
-                  key={product._id}
-                  className="md:border content-font h-max hover:border-[#e5b236] group overflow-hidden bg-white border-gray-200 pb-5 md:pb-10 relative rounded-lg md:p-4"
-                >
-                  <div>
-                    <Link to={`/product/${product.slug}`}>
-                      <div className="overflow-hidden">
-                        <img
-                          src={product.image}
-                          alt={product.name}
-                          className="w-full transition-transform duration-300 group-hover:scale-110 object-cover rounded"
-                        />
-                      </div>
-                    </Link>
-                    <div className="md:space-y-1 mt-4 mb-8">
+              currentProducts.map((product) => {
+                const isHidden = product?.status === "inactive";
+
+                return (
+                  <div
+                    key={product._id}
+                    className={`border content-font h-max hover:border-[#e5b236] group overflow-hidden bg-white border-gray-200 relative rounded-lg p-4 ${isHidden ? "opacity-90" : ""}`}
+                  >
+                    {/* {isHidden && (
+                      <span className="absolute top-3 right-3 z-10 rounded-full bg-slate-900/80 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-white backdrop-blur">
+                        Hidden
+                      </span>
+                    )} */}
+
+                    <div>
+                      <Link to={`/product/${product.slug}`}>
+                        <div className="relative overflow-hidden rounded">
+                          <img
+                            src={product.image}
+                            alt={product.name}
+                            className={`w-full transition-transform duration-300 object-cover rounded ${
+                              isHidden
+                                ? "blur-[2px] opacity-70 scale-[1.02]"
+                                : "group-hover:scale-110"
+                            }`}
+                          />
+
+                          {isHidden && (
+                            <div className="absolute inset-0 flex items-center justify-center rounded bg-slate-900/20">
+                              <span className="rounded-full bg-slate-900/75 px-3 py-1 text-xs font-bold text-white backdrop-blur">
+                                Currently no available
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      </Link>
+                      <div className="md:space-y-1 mt-4">
                       <h3 className="text-[12px] md:text-[14px] truncate w-[120px] md:w-[200px]">
                         {product.name}
                       </h3>
@@ -104,32 +125,46 @@ const ProductListPage = () => {
                       <div className="flex md:mt-0 mt-1 flex-col gap-1">
                         <div className="flex gap-2">
                           <p className="text-gray-800 text-[12px] md:text-[15px] font-semibold">
-                            ₹{Number(product.price || 0).toLocaleString("en-IN")}
+                            ₹
+                            {Number(product.price || 0).toLocaleString("en-IN")}
                             {/* ₹{product.finalPrice} */}
                           </p>
                           <p className="text-red-500 text-[12px] md:text-[15px] line-through">
                             ₹{product.mrp}
                           </p>
                         </div>
-                        <div className="flex items-center gap-1">
-                          {Array.from({ length: 5 }, (_, i) => (
-                            <Star
-                              key={i}
-                              size={14}
-                              className={
-                                i < product.rating
-                                  ? "text-yellow-500"
-                                  : "text-gray-300"
-                              }
-                            />
-                          ))}
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-1">
+                            {Array.from({ length: 5 }, (_, i) => (
+                              <Star
+                                key={i}
+                                size={14}
+                                className={
+                                  i < product.rating
+                                    ? "text-yellow-500"
+                                    : "text-gray-300"
+                                }
+                              />
+                            ))}
+                          </div>
+                          <button
+                            onClick={() => !isHidden && addToCart(product)}
+                            disabled={isHidden}
+                            className={`flex items-center border border-slate-[#111825] justify-center p-1 shadow-md rounded transition ${
+                              isHidden
+                                ? "cursor-not-allowed bg-gray-200 text-gray-500"
+                                : "cursor-pointer bg-white text-[#111825]"
+                            }`}
+                          >
+                            <Plus className={`w-3 h-3 md:w-5 md:h-5 ${!isHidden ? "transition-transform duration-300 hover:rotate-180" : ""}`} />
+                          </button>
                         </div>
                       </div>
                     </div>
                   </div>
 
                   {/* Buttons */}
-                  <div className="absolute bottom-3 md:bottom-5 w-full left-1/2 md:px-4 transform -translate-x-1/2">
+                  {/* <div className="absolute bottom-3 md:bottom-5 w-full left-1/2 md:px-4 transform -translate-x-1/2">
                     <div className="flex items-center w-full justify-between">
                       <Link
                         to={`/product/${product.slug}`}
@@ -144,7 +179,7 @@ const ProductListPage = () => {
                         <Plus className="w-3 transition-transform duration-300 hover:rotate-180 h-3 md:w-5 md:h-5" />
                       </button>
                     </div>
-                  </div>
+                  </div> */}
 
                   {/* Discount Tag */}
                   {product.discount > 0 && (
@@ -154,7 +189,8 @@ const ProductListPage = () => {
                     </div>
                   )}
                 </div>
-              ))
+                );
+              })
             ) : (
               <p className="col-span-full text-center text-gray-500">
                 No products found.

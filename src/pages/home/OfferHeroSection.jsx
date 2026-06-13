@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import { Link } from "react-router-dom";
@@ -12,7 +12,7 @@ const OfferHeroSection = () => {
 
   const fetchOfferHeroSlides = async () => {
     try {
-      const { data } = await axiosInstance.get("/offer-hero-slides");
+      const { data } = await axiosInstance.get("/offerHero-slides");
       setHeroOfferSlides(data);
     } catch (error) {
       console.error("Failed to fetch offer hero slides:", error);
@@ -50,6 +50,7 @@ const OfferHeroSection = () => {
     <section className="overflow-hidden m-1">
       <Swiper
         direction="vertical"
+
         autoplay={{ delay: 2500, disableOnInteraction: false }}
         loop={true}
         slidesPerView={2}
@@ -66,13 +67,7 @@ const OfferHeroSection = () => {
           <SwiperSlide key={item._id}>
             <div className="relative group bg-[url('./assets/images/bg-pattern/shopping-pattern.avif')] bg-cover bg-center overflow-hidden">
               <div
-                className={`absolute inset-0 opacity-90 ${
-                  item._id % 3 === 0
-                    ? "bg-[#030050db]"
-                    : item._id % 3 === 1
-                    ? "bg-[#e5b336e0]"
-                    : "bg-[#000000d0]"
-                }`}
+                className={`absolute inset-0 opacity-90 ${item.overlayColor || (item._id % 3 === 0 ? "bg-[#111825]" : item._id % 3 === 1 ? "bg-[#E5B236]" : "bg-[#000000]")}`}
               ></div>
 
               <div className="relative z-10 flex justify-between items-center px-5 md:py-10 lg:py-12">

@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
-import { MoveLeft, MoveRight, Loader2 } from "lucide-react";
+import { MoveLeft, MoveRight, Loader2, Plus, Star } from "lucide-react";
 import { Link } from "react-router-dom";
 import { StoreContext } from "../../context/StoreContext";
 
@@ -11,14 +11,15 @@ import "swiper/css/navigation";
 
 const CategorySwiperSection = () => {
   // ✅ Logic: Use products from StoreContext to avoid duplicate API calls
-  const { products, loading } = useContext(StoreContext);
+  const { products, loading, addToCart } = useContext(StoreContext);
 
   // ✅ Logic: Prevent rendering swiper before data is ready
-  if (loading || !products || products.length === 0) return (
-    <div className="flex justify-center py-20">
-      <Loader2 className="animate-spin text-[#e5b236]" size={32} />
-    </div>
-  );
+  if (loading || !products || products.length === 0)
+    return (
+      <div className="flex justify-center py-20">
+        <Loader2 className="animate-spin text-[#e5b236]" size={32} />
+      </div>
+    );
 
   // ✅ Logic: Get unique categories from API data
   const categories = [...new Set(products.map((p) => p.category))];
@@ -28,7 +29,7 @@ const CategorySwiperSection = () => {
       {categories.map((category, index) => {
         // ✅ Logic: Filter products based on fetched data
         const categoryProducts = products.filter(
-          (p) => p.category === category
+          (p) => p.category === category,
         );
 
         const navPrev = `prev-${index}`;
@@ -73,18 +74,29 @@ const CategorySwiperSection = () => {
             >
               {categoryProducts.map((product) => (
                 <SwiperSlide key={product._id}>
-                  <div className="md:border content-font h-max md:hover:border-[#e5b236] group overflow-hidden bg-white md:border-gray-200 pb-5 md:pb-10 relative rounded-lg md:p-4">
+                  <div className="md:border content-font h-max md:hover:border-[#e5b236] group overflow-hidden bg-white md:border-gray-200 relative rounded-lg md:p-4">
                     <div>
                       <Link to={`/product/${product.slug}`}>
                         <div className="overflow-hidden">
                           <img
                             src={product.image}
                             alt={product.name}
-                            className="w-full transition-transform duration-300 group-hover:scale-110 object-cover rounded"
+                            className={`w-full transition-transform duration-300 object-cover rounded ${
+                              product?.status === "inactive"
+                                ? "blur-[2px] opacity-70 scale-[1.02]"
+                                : "group-hover:scale-110"
+                            }`}
                           />
+                          {product?.status === "inactive" && (
+                            <div className="absolute inset-0 flex items-center justify-center rounded bg-slate-900/20">
+                              <span className="rounded-full bg-slate-900/75 px-3 py-1 text-xs font-bold text-white backdrop-blur">
+                                Currently no available
+                              </span>
+                            </div>
+                          )}
                         </div>
                       </Link>
-                      <div className="md:space-y-1 mt-4 mb-8">
+                      <div className="md:space-y-1 mt-4">
                         <h3 className="text-[12px] md:text-[16px] truncate w-[120px] md:w-[160px] 2xl:w-[200px]">
                           {product.name}
                         </h3>
@@ -100,24 +112,56 @@ const CategorySwiperSection = () => {
                         </div>
                       </div>
                     </div>
-                    {/* Buttons */}
-                    <div className="absolute bottom-3 md:bottom-5 w-full md:left-1/2 md:px-4 transform md:-translate-x-1/2">
-                      <div className="flex items-center w-full justify-between">
-                        <Link
-                          to={`/product/${product.slug}`}
-                          className="bg-[#111825] md:text-[15px] text-[12px] text-white px-2 py-1 md:py-2 md:px-5 rounded hover:bg-yellow-600 transition"
-                        >
-                          View Details
-                        </Link>
+
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-1">
+                        {Array.from({ length: 5 }, (_, i) => (
+                          <Star
+                            key={i}
+                            size={14}
+                            className={
+                              i < (product.rating || 0)
+                                ? "text-yellow-500"
+                                : "text-gray-300"
+                            }
+                          />
+                        ))}
                       </div>
+
+                      {/* Hidden flow (same logic as ProductList):
+                          status === "inactive" => disable + apply disabled styles */}
+                      {(() => {
+                        const isHidden = product?.status === "inactive";
+                        return (
+                          <>
+                            <button
+                              onClick={() => !isHidden && addToCart(product)}
+                              disabled={isHidden}
+                              className={`flex items-center border border-slate-[#111825] justify-center p-1 shadow-md rounded transition ${
+                                isHidden
+                                  ? "cursor-not-allowed bg-gray-200 text-gray-500"
+                                  : "cursor-pointer bg-white text-[#111825]"
+                              }`}
+                            >
+                              <Plus
+                                className={`w-3 h-3 md:w-5 md:h-5 ${
+                                  !isHidden
+                                    ? "transition-transform duration-300 hover:rotate-180"
+                                    : ""
+                                }`}
+                              />
+                            </button>
+
+                            {product.discount > 0 && (
+                              <div className="absolute top-3 rounded-s right-0 w-[50px] text-center py-1 text-[12px] md:text-sm text-white bg-[#e5b336] hover:scale-110 transition-transform duration-300 overflow-hidden">
+                                {product.discount}%
+                                <span className="absolute top-0 left-[-75%] w-[50%] h-full bg-white opacity-20 rotate-12 animate-[shine_2s_infinite]" />
+                              </div>
+                            )}
+                          </>
+                        );
+                      })()}
                     </div>
-                    {/* Discount Tag */}
-                    {product.discount > 0 && (
-                      <div className="absolute top-3 rounded-s right-0 w-[50px] text-center py-1 text-[12px] md:text-sm text-white bg-[#e5b336] hover:scale-110 transition-transform duration-300 overflow-hidden">
-                        {product.discount}%
-                        <span className="absolute top-0 left-[-75%] w-[50%] h-full bg-white opacity-20 rotate-12 animate-[shine_2s_infinite]" />
-                      </div>
-                    )}
                   </div>
                 </SwiperSlide>
               ))}
