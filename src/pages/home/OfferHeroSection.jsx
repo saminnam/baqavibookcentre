@@ -68,9 +68,7 @@ const OfferHeroSection = () => {
           <SwiperSlide key={item._id}>
             <div className="relative group bg-[url('./assets/images/bg-pattern/shopping-pattern.avif')] bg-cover bg-center overflow-hidden">
               <div
-                className={`absolute inset-0 opacity-90 ${
-                  item.overlayColor || colors[index % colors.length]
-                }`}
+                className={`absolute inset-0 opacity-90 bg-black`}
               />
 
               <div className="relative z-10 flex justify-between items-center px-5 md:py-10 lg:py-12">
