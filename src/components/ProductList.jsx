@@ -110,61 +110,65 @@ const ProductListPage = () => {
 
                           {isHidden && (
                             <div className="absolute inset-0 flex items-center justify-center rounded bg-slate-900/20">
-                              <span className="rounded-full bg-slate-900/75 px-3 py-1 text-xs font-bold text-white backdrop-blur">
-                                Currently no available
+                              <span className="rounded bg-red-400/75 px-3 py-2 text-[10px] md:text-xs font-bold text-white backdrop-blur">
+                                Currently not available
                               </span>
                             </div>
                           )}
                         </div>
                       </Link>
                       <div className="md:space-y-1 mt-4">
-                      <h3 className="text-[12px] md:text-[14px] truncate w-[120px] md:w-[200px]">
-                        {product.name}
-                      </h3>
+                        <h3 className="text-[12px] md:text-[14px] truncate w-[120px] md:w-[200px]">
+                          {product.name}
+                        </h3>
 
-                      <div className="flex md:mt-0 mt-1 flex-col gap-1">
-                        <div className="flex gap-2">
-                          <p className="text-gray-800 text-[12px] md:text-[15px] font-semibold">
-                            ₹
-                            {Number(product.price || 0).toLocaleString("en-IN")}
-                            {/* ₹{product.finalPrice} */}
-                          </p>
-                          <p className="text-red-500 text-[12px] md:text-[15px] line-through">
-                            ₹{product.mrp}
-                          </p>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-1">
-                            {Array.from({ length: 5 }, (_, i) => (
-                              <Star
-                                key={i}
-                                size={14}
-                                className={
-                                  i < product.rating
-                                    ? "text-yellow-500"
-                                    : "text-gray-300"
-                                }
-                              />
-                            ))}
+                        <div className="flex md:mt-0 mt-1 flex-col gap-1">
+                          <div className="flex gap-2">
+                            <p className="text-gray-800 text-[12px] md:text-[15px] font-semibold">
+                              ₹
+                              {Number(product.price || 0).toLocaleString(
+                                "en-IN",
+                              )}
+                              {/* ₹{product.finalPrice} */}
+                            </p>
+                            <p className="text-red-500 text-[12px] md:text-[15px] line-through">
+                              ₹{product.mrp}
+                            </p>
                           </div>
-                          <button
-                            onClick={() => !isHidden && addToCart(product)}
-                            disabled={isHidden}
-                            className={`flex items-center border border-slate-[#111825] justify-center p-1 shadow-md rounded transition ${
-                              isHidden
-                                ? "cursor-not-allowed bg-gray-200 text-gray-500"
-                                : "cursor-pointer bg-white text-[#111825]"
-                            }`}
-                          >
-                            <Plus className={`w-3 h-3 md:w-5 md:h-5 ${!isHidden ? "transition-transform duration-300 hover:rotate-180" : ""}`} />
-                          </button>
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-1">
+                              {Array.from({ length: 5 }, (_, i) => (
+                                <Star
+                                  key={i}
+                                  size={14}
+                                  className={
+                                    i < product.rating
+                                      ? "text-yellow-500"
+                                      : "text-gray-300"
+                                  }
+                                />
+                              ))}
+                            </div>
+                            <button
+                              onClick={() => !isHidden && addToCart(product)}
+                              disabled={isHidden}
+                              className={`flex items-center border border-slate-[#111825] justify-center p-1 shadow-md rounded transition ${
+                                isHidden
+                                  ? "cursor-not-allowed bg-gray-200 text-gray-500"
+                                  : "cursor-pointer bg-white text-[#111825]"
+                              }`}
+                            >
+                              <Plus
+                                className={`w-3 h-3 md:w-5 md:h-5 ${!isHidden ? "transition-transform duration-300 hover:rotate-180" : ""}`}
+                              />
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
 
-                  {/* Buttons */}
-                  {/* <div className="absolute bottom-3 md:bottom-5 w-full left-1/2 md:px-4 transform -translate-x-1/2">
+                    {/* Buttons */}
+                    {/* <div className="absolute bottom-3 md:bottom-5 w-full left-1/2 md:px-4 transform -translate-x-1/2">
                     <div className="flex items-center w-full justify-between">
                       <Link
                         to={`/product/${product.slug}`}
@@ -181,14 +185,14 @@ const ProductListPage = () => {
                     </div>
                   </div> */}
 
-                  {/* Discount Tag */}
-                  {product.discount > 0 && (
-                    <div className="absolute top-3 rounded-s right-0 w-[50px] text-center py-1 text-[12px] md:text-sm text-white bg-[#e5b336] hover:scale-110 transition-transform duration-300 overflow-hidden">
-                      {product.discount}%
-                      <span className="absolute top-0 left-[-75%] w-[50%] h-full bg-white opacity-20 rotate-12 animate-[shine_2s_infinite]" />
-                    </div>
-                  )}
-                </div>
+                    {/* Discount Tag */}
+                    {product.discount > 0 && (
+                      <div className="absolute top-3 rounded-s right-0 w-[50px] text-center py-1 text-[12px] md:text-sm text-white bg-[#e5b336] hover:scale-110 transition-transform duration-300 overflow-hidden">
+                        {product.discount}%
+                        <span className="absolute top-0 left-[-75%] w-[50%] h-full bg-white opacity-20 rotate-12 animate-[shine_2s_infinite]" />
+                      </div>
+                    )}
+                  </div>
                 );
               })
             ) : (

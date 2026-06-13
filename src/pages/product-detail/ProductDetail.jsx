@@ -66,8 +66,8 @@ const ProductDetail = () => {
 
                 {product?.status === "inactive" && (
                   <div className="absolute inset-0 bg-slate-900/20 flex items-center justify-center">
-                    <span className="rounded-full bg-slate-900/75 px-5 py-2 text-sm font-bold text-white backdrop-blur">
-                      Currently no available
+                    <span className="rounded bg-red-400/75 px-3 py-2 text-[10px] md:text-xs font-bold text-white backdrop-blur">
+                      Currently not available
                     </span>
                   </div>
                 )}
@@ -126,10 +126,14 @@ const ProductDetail = () => {
               </p>
               {product.mrp && (
                 <>
-                  <p className="text-gray-400 line-through">₹{Number(product.mrp || 0).toLocaleString("en-IN")}</p>
+                  <p className="text-gray-400 line-through">
+                    ₹{Number(product.mrp || 0).toLocaleString("en-IN")}
+                  </p>
                   <p className="text-green-600 font-semibold">
                     {Math.round(
-                      ((Number(product.mrp || 0) - Number(product.price || 0)) / Number(product.mrp || 1)) * 100,
+                      ((Number(product.mrp || 0) - Number(product.price || 0)) /
+                        Number(product.mrp || 1)) *
+                        100,
                     )}
                     % off
                   </p>
@@ -150,7 +154,12 @@ const ProductDetail = () => {
                     : ""
                 }`}
               >
-                <ShoppingCart size={20} /> <span>{product?.status === "inactive" ? "Product not available" : "Add to Cart"}</span>
+                <ShoppingCart size={20} />{" "}
+                <span>
+                  {product?.status === "inactive"
+                    ? "Product not available"
+                    : "Add to Cart"}
+                </span>
               </button>
             </div>
           </div>

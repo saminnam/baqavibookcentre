@@ -89,8 +89,8 @@ const CategorySwiperSection = () => {
                           />
                           {product?.status === "inactive" && (
                             <div className="absolute inset-0 flex items-center justify-center rounded bg-slate-900/20">
-                              <span className="rounded-full bg-slate-900/75 px-3 py-1 text-xs font-bold text-white backdrop-blur">
-                                Currently no available
+                              <span className="rounded bg-red-400/75 px-3 py-2 text-[10px] md:text-xs font-bold text-white backdrop-blur">
+                                Currently not available
                               </span>
                             </div>
                           )}

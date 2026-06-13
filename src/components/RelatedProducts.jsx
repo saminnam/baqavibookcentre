@@ -51,7 +51,7 @@ const RelatedProducts = ({ category, currentProductId }) => {
             : // ✅ Show actual products when loaded
               relatedProducts.map((item) => (
                 <SwiperSlide key={item._id}>
-                  <div className="md:border content-font hover:border-[#e5b236] group overflow-hidden bg-white border-gray-200 relative rounded-lg md:p-4">
+                  <div className="border content-font hover:border-[#e5b236] group overflow-hidden bg-white border-gray-200 relative rounded-lg md:p-4">
                     <div>
                       <Link to={`/product/${item.slug}`}>
                         <div className="overflow-hidden">
