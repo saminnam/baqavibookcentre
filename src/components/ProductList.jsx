@@ -87,7 +87,7 @@ const ProductListPage = () => {
                 return (
                   <div
                     key={product._id}
-                    className={`border content-font h-max hover:border-[#e5b236] group overflow-hidden bg-white border-gray-200 relative rounded-lg p-4 ${isHidden ? "opacity-90" : ""}`}
+                    className={`border content-font h-max hover:border-[#e5b236] group overflow-hidden bg-white border-gray-200 relative rounded-lg p-3 ${isHidden ? "opacity-90" : ""}`}
                   >
                     {/* {isHidden && (
                       <span className="absolute top-3 right-3 z-10 rounded-full bg-slate-900/80 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-white backdrop-blur">

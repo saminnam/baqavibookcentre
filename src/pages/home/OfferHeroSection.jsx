@@ -10,6 +10,8 @@ const OfferHeroSection = () => {
   const [heroOfferSlides, setHeroOfferSlides] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const colors = ["bg-[#111825]", "bg-[#E5B236]", "bg-[#000000]"];
+
   const fetchOfferHeroSlides = async () => {
     try {
       const { data } = await axiosInstance.get("/offerHero-slides");
@@ -50,7 +52,6 @@ const OfferHeroSection = () => {
     <section className="overflow-hidden m-1">
       <Swiper
         direction="vertical"
-
         autoplay={{ delay: 2500, disableOnInteraction: false }}
         loop={true}
         slidesPerView={2}
@@ -63,12 +64,14 @@ const OfferHeroSection = () => {
         className="h-auto md:h-[500px]"
         speed={600}
       >
-        {heroOfferSlides.map((item) => (
+        {heroOfferSlides.map((item, index) => (
           <SwiperSlide key={item._id}>
             <div className="relative group bg-[url('./assets/images/bg-pattern/shopping-pattern.avif')] bg-cover bg-center overflow-hidden">
               <div
-                className={`absolute inset-0 opacity-90 ${item.overlayColor || (item._id % 3 === 0 ? "bg-[#111825]" : item._id % 3 === 1 ? "bg-[#E5B236]" : "bg-[#000000]")}`}
-              ></div>
+                className={`absolute inset-0 opacity-90 ${
+                  item.overlayColor || colors[index % colors.length]
+                }`}
+              />
 
               <div className="relative z-10 flex justify-between items-center px-5 md:py-10 lg:py-12">
                 <div className="space-y-3 w-[65%]">
