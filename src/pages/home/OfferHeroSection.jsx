@@ -10,7 +10,7 @@ const OfferHeroSection = () => {
   const [heroOfferSlides, setHeroOfferSlides] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const colors = ["bg-[#111825]", "bg-[#E5B236]", "bg-[#000000]"];
+  // const colors = ["bg-[#111825]", "bg-[#E5B236]", "bg-[#000000]"];
 
   const fetchOfferHeroSlides = async () => {
     try {
