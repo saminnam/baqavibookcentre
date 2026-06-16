@@ -167,7 +167,7 @@ const Footer = () => {
               <a href="#" className="hover:underline text-[#fff]">
                 Baqavi Book Centre{" "}
               </a>
-              All Rights Reserved | Designed & Developed by ....
+              All Rights Reserved 
             </span>
 
             <div className="flex mt-6 space-x-4 sm:justify-center sm:mt-0">
