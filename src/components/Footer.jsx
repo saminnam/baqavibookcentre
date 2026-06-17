@@ -1,17 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/images/logo-bg.png";
-import {
-  Facebook,
-  Instagram,
-  Youtube,
-} from "lucide-react";
+import { Facebook, Instagram, Youtube } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
-
 
 const Footer = () => {
   return (
-    <footer className="w-full mt-16 md:mt-0 relative bg-[url('src/assets/images/bg-pattern/footer-pattern.webp')] bg-cover bg-center bg-no-repeat">
+    <footer className="w-full md:mt-16 mt-0 relative bg-[url('src/assets/images/bg-pattern/footer-pattern.webp')] bg-cover bg-center bg-no-repeat">
       <div className="bg-[#bc8600f5] absolute inset-0 z-10"></div>
       {/* <div class="bg-[#111825fa] absolute inset-0 z-10"></div> */}
       <div className="mx-auto container px-4 pt-16 sm:px-6 lg:px-8 relative z-20">
@@ -25,7 +20,7 @@ const Footer = () => {
               />
             </Link>
             <div>
-              <p className="text-white mb-5 mt-5 w-[300px] md:max-w-[400px] lg:w-full">
+              <p className="text-white text-justify mb-5 mt-5 w-[300px] md:max-w-[400px] lg:w-full">
                 Shop the best Islamic books online, including Quran, Hadith,
                 Islamic history, and educational Islamic literature. Fast
                 delivery across India.
@@ -40,11 +35,11 @@ const Footer = () => {
                   Home
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link to={"/about-us"} className=" text-white">
                   About
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link to={"/products"} className=" text-white">
                   Shop
@@ -167,7 +162,11 @@ const Footer = () => {
               <a href="#" className="hover:underline text-[#fff]">
                 Baqavi Book Centre{" "}
               </a>
+<<<<<<< HEAD
               All Rights Reserved 
+=======
+              All Rights Reserved.
+>>>>>>> 74fbb95 (updated)
             </span>
 
             <div className="flex mt-6 space-x-4 sm:justify-center sm:mt-0">
@@ -189,8 +188,10 @@ const Footer = () => {
 
               {/* WhatsApp */}
               <a className="group w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center transition-all duration-300 hover:border-indigo-600">
-          <FaWhatsapp size={18} className="text-white group-hover:text-indigo-600" />
-
+                <FaWhatsapp
+                  size={18}
+                  className="text-white group-hover:text-indigo-600"
+                />
               </a>
 
               {/* YouTube */}

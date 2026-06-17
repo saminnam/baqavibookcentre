@@ -33,7 +33,7 @@ const StoreContextProvider = (props) => {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const response = await axiosInstance.get("/products?limit=1000");
+      const response = await axiosInstance.get("/products");
       // Handle both old format (array) and new format (object with products key)
       const productsData = response.data.products || response.data;
       setProducts(productsData);
