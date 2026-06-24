@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+
 import {
   Menu,
   X,
@@ -13,6 +14,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { StoreContext } from "../context/StoreContext";
+
 import logo from "../assets/images/logo-bg.png";
 import MobileSearchBar from "../components/MobileSearchBar";
 import { policyData } from "../data/policyData";
@@ -20,7 +22,8 @@ import PolicyPopup from "../modals/PolicyPopup";
 import { AuthContext } from "../context/AuthContext";
 const Navbar = () => {
   const [categoryOpen, setCategoryOpen] = useState(false);
-  const { menuOpen, setMenuOpen, cartItems, categories } = useContext(StoreContext);
+  const { menuOpen, setMenuOpen, cartItems, categories, products } = useContext(StoreContext);
+
   const navigate = useNavigate();
   const [navbarSearch, setNavbarSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -38,17 +41,26 @@ const Navbar = () => {
     setIsOpen(true);
   };
 
-  const handleSearch = () => {
-    if (navbarSearch.trim() !== "") {
-      navigate(`/products?search=${encodeURIComponent(navbarSearch)}`);
+  const handleSearch = (overrideValue) => {
+    const q = (overrideValue ?? navbarSearch).trim();
+    if (q !== "") {
+      navigate(`/products?search=${encodeURIComponent(q)}`);
+    } else {
+      // If user clears input, reset products list by removing query param
+      navigate(`/products`);
     }
   };
+
+
 
   const handleCategorySelect = (category) => {
     setSelectedCategory(category);
     navigate(`/products?category=${encodeURIComponent(category)}`);
   };
   const dropdownRef = useRef(null);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+
+
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -326,21 +338,73 @@ const Navbar = () => {
                 ))}
               </div>
             </div>
-            <div className="flex border bg-white lg:rounded-l-none rounded-l-full rounded-r-full">
+            <div className="relative flex border bg-white lg:rounded-l-none rounded-l-full rounded-r-full">
               <input
                 type="text"
                 placeholder="Search for products..."
                 value={navbarSearch}
-                onChange={(e) => setNavbarSearch(e.target.value)}
+                onChange={(e) => {
+                  setNavbarSearch(e.target.value);
+                  setShowSuggestions(true);
+                }}
+                onFocus={() => setShowSuggestions(true)}
+                onBlur={() => {
+                  // allow click on suggestion items
+                  setTimeout(() => setShowSuggestions(false), 150);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleSearch();
+                }}
                 className="w-full px-4 py-2 outline-none"
               />
+
+              {showSuggestions && navbarSearch.trim() !== "" && (
+                <div className="absolute left-0 top-full w-full bg-white shadow-lg z-50 max-h-60 overflow-y-auto rounded-b-lg border border-gray-200">
+                  <ul className="text-sm">
+                    {Array.from(
+                      new Set(
+                        (products || [])
+                          .map((p) => p.name)
+                          .filter(Boolean)
+                          .filter((name) =>
+                            name
+                              .toLowerCase()
+                              .replace(/\s+/g, "")
+                              .includes(
+                                navbarSearch
+                                  .toLowerCase()
+                                  .replace(/\s+/g, ""),
+                              ),
+                          )
+
+                          .slice(0, 8),
+                      ),
+                    ).map((name) => (
+                      <li
+                        key={name}
+                        className="px-3 py-2 hover:bg-[#E5B236] hover:text-white cursor-pointer"
+                        onMouseDown={(e) => e.preventDefault()}
+                        onClick={() => {
+                          setNavbarSearch(name);
+                          setShowSuggestions(false);
+                          handleSearch(name);
+                        }}
+                      >
+                        {name}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
               <button
-                onClick={handleSearch}
+                onClick={() => handleSearch()}
                 className="bg-[#E5B236] cursor-pointer text-white px-4 rounded-r-full"
               >
                 <Search size={18} />
               </button>
             </div>
+
           </div>
 
           {/* Wishlist & Cart */}

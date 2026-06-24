@@ -20,8 +20,12 @@ const ProductListPage = () => {
     setSortOrder,
     priceRange,
     setPriceRange,
+    minStarRating,
+    setMinStarRating,
     filterSearch,
     setFilterSearch,
+
+
     addToCart,
     loading,
   } = useContext(StoreContext);
@@ -49,9 +53,28 @@ const ProductListPage = () => {
     const search = searchParams.get("search");
     const category = searchParams.get("category");
 
-    if (search) setFilterSearch(search);
-    if (category) setSelectedCategory(category);
-  }, [searchParams, setFilterSearch, setSelectedCategory]);
+    // Sync header/mobile search into StoreContext immediately.
+    // - if query param removed => clear search filter
+    // - if query param empty => also clear search filter
+    if (search === null || search === "") {
+      setFilterSearch("");
+    } else {
+      setFilterSearch(search);
+    }
+
+    // Sync category + reset pagination.
+    if (category) {
+      setSelectedCategory(category);
+    } else {
+      setSelectedCategory("All");
+    }
+
+    setCurrentPage(1);
+  }, [searchParams, setSelectedCategory, setFilterSearch]);
+
+
+
+
 
   return (
     <div className="container mx-auto p-2 md:p-6 content-font">
@@ -62,15 +85,16 @@ const ProductListPage = () => {
             showFilter={showFilter}
             setShowFilter={setShowFilter}
             categories={categories}
-            filterSearch={filterSearch}
-            setFilterSearch={setFilterSearch}
             selectedCategory={selectedCategory}
             setSelectedCategory={setSelectedCategory}
             priceRange={priceRange}
             setPriceRange={setPriceRange}
             sortOrder={sortOrder}
             setSortOrder={setSortOrder}
+            minStarRating={minStarRating}
+            setMinStarRating={setMinStarRating}
           />
+
         </div>
 
         {/* Product Grid Section */}

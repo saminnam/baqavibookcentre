@@ -1,8 +1,8 @@
 import { createContext, useState, useEffect, useMemo, useContext } from "react";
-import axios from "axios";
 import axiosInstance from "../api/axiosInstance";
+
 import { toast } from "react-toastify";
-import useDebounce from "../utils/useDebounce";
+
 import { AuthContext } from "./AuthContext";
 
 export const StoreContext = createContext(null);
@@ -25,9 +25,8 @@ const StoreContextProvider = (props) => {
   const [sortOrder, setSortOrder] = useState("");
   const [priceRange, setPriceRange] = useState([0, 10000]); // Set a high default
   const [filterSearch, setFilterSearch] = useState("");
+  const [minStarRating, setMinStarRating] = useState(0);
 
-  // Debounce search values to reduce unnecessary re-renders
-  const debouncedFilterSearch = useDebounce(filterSearch, 300);
 
   // 1️⃣ FETCH DATA FROM API (with pagination support)
   const fetchProducts = async () => {
@@ -164,7 +163,7 @@ const StoreContextProvider = (props) => {
     return total;
   };
 
-  // 3️⃣ FILTERING & SEARCHING (Client-side with debounced search)
+  // 3️⃣ FILTERING & SEARCHING (Client-side)
   const filteredProducts = useMemo(() => {
     let filtered = [...products];
 
@@ -176,13 +175,22 @@ const StoreContextProvider = (props) => {
       (p) => p.price >= priceRange[0] && p.price <= priceRange[1]
     );
 
-    if (debouncedFilterSearch.trim()) {
-      const searchTermNoSpace = debouncedFilterSearch.toLowerCase().replace(/\s+/g, "");
+    // ⭐ Filter by minimum star rating
+    filtered = filtered.filter((p) => (Number(p.rating) || 0) >= minStarRating);
+
+    // ✅ Header search (Navbar/MobileSearchBar)
+    // If filterSearch is empty, do not filter by name.
+    const searchTerm = (filterSearch || "").trim();
+    if (searchTerm !== "") {
+      const searchTermNoSpace = searchTerm.toLowerCase().replace(/\s+/g, "");
       filtered = filtered.filter((p) => {
-        const productNameNoSpace = p.name.toLowerCase().replace(/\s+/g, "");
+        const productNameNoSpace = (p.name || "")
+          .toLowerCase()
+          .replace(/\s+/g, "");
         return productNameNoSpace.includes(searchTermNoSpace);
       });
     }
+
 
     if (sortOrder === "low-to-high") {
       filtered.sort((a, b) => a.price - b.price);
@@ -191,7 +199,9 @@ const StoreContextProvider = (props) => {
     }
 
     return filtered;
-  }, [products, selectedCategory, priceRange, sortOrder, debouncedFilterSearch]);
+  }, [products, selectedCategory, priceRange, sortOrder, minStarRating, filterSearch]);
+
+
 
   const categoryOptions = ["All", ...new Set(categories)];
 
@@ -211,8 +221,10 @@ const StoreContextProvider = (props) => {
     sortOrder, setSortOrder,
     priceRange, setPriceRange,
     filterSearch, setFilterSearch,
+    minStarRating, setMinStarRating,
     loading, setLoading,
   };
+
 
   return (
     <StoreContext.Provider value={contextValue}>

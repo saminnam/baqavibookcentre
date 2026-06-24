@@ -1,6 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
+
 import { Menu, Search, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+
+import { StoreContext } from "../context/StoreContext";
 
 const MobileSearchBar = ({
   categories,
@@ -9,8 +12,12 @@ const MobileSearchBar = ({
   setSearchValue,
   setSelectedCategory,
 }) => {
+  const { products } = useContext(StoreContext);
   const navigate = useNavigate();
+
   const [showDropdown, setShowDropdown] = useState(false);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+
   const dropdownRef = useRef(null);
 
   useEffect(() => {
@@ -24,10 +31,15 @@ const MobileSearchBar = ({
   }, []);
 
   const handleSearch = () => {
-    if (searchValue.trim() !== "") {
-      navigate(`/products?search=${encodeURIComponent(searchValue)}`);
+    const q = searchValue.trim();
+    if (q !== "") {
+      navigate(`/products?search=${encodeURIComponent(q)}`);
+    } else {
+      // If user clears input, reset products list by removing query param
+      navigate(`/products`);
     }
   };
+
 
   const handleCategorySelect = (category) => {
     setSelectedCategory(category);
@@ -82,21 +94,71 @@ const MobileSearchBar = ({
             </div>
           )}
         </div>
-        {/* Search Input */}
-        <input
-          type="text"
-          placeholder="Search for products..."
-          value={searchValue}
-          onChange={(e) => setSearchValue(e.target.value)}
-          className="w-full px-4 py-2 outline-none"
-        />
+        {/* Search Input + Suggestions */}
+        <div className="relative flex-1">
+          <input
+            type="text"
+            placeholder="Search for products..."
+            value={searchValue}
+            onChange={(e) => {
+              setSearchValue(e.target.value);
+              setShowSuggestions(true);
+            }}
+            onFocus={() => setShowSuggestions(true)}
+            onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") handleSearch();
+            }}
+            className="w-full px-4 py-2 outline-none"
+          />
+
+          {showSuggestions && searchValue.trim() !== "" && (
+            <div className="absolute left-0 right-0 top-full bg-white shadow-lg z-50 max-h-60 overflow-y-auto border border-gray-200 rounded-b-lg">
+              <ul className="text-sm">
+                {Array.from(
+                  new Set(
+                    (products || [])
+                      .map((p) => p.name)
+                      .filter(Boolean)
+                      .filter((name) =>
+                        name
+                          .toLowerCase()
+                          .replace(/\s+/g, "")
+                          .includes(
+                            searchValue
+                              .toLowerCase()
+                              .replace(/\s+/g, ""),
+                          ),
+                      )
+                      .slice(0, 8),
+                  ),
+                ).map((name) => (
+                  <li
+                    key={name}
+                    className="px-3 py-2 hover:bg-[#E5B236] hover:text-white cursor-pointer"
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => {
+                      setSearchValue(name);
+                      setShowSuggestions(false);
+                      navigate(`/products?search=${encodeURIComponent(name)}`);
+                    }}
+                  >
+                    {name}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+
         {/* Search Button */}
         <button
-          onClick={handleSearch}
+          onClick={() => handleSearch()}
           className="bg-[#E5B236] text-white px-4 flex items-center justify-center"
         >
           <Search size={18} />
         </button>
+
       </div>
     </div>
   );

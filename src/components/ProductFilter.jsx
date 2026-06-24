@@ -1,26 +1,31 @@
 import React, { useEffect, useRef, useContext, useState } from "react";
-// ❌ REMOVED: import { category_list, product_list } from "../data/productData";
 import { StoreContext } from "../context/StoreContext";
 import { X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
+
 const ProductFilter = ({
-  filterSearch,
-  setFilterSearch,
   selectedCategory,
   setSelectedCategory,
   priceRange,
   setPriceRange,
   sortOrder,
   setSortOrder,
+  minStarRating,
+  setMinStarRating,
 }) => {
+
+
+
   // ✅ Extract live data and states from StoreContext
-  const { 
+  const {
+
     showFilter, 
     setShowFilter, 
     product_list, // Now coming from API via Context
     categories    // Now dynamically generated in Context
   } = useContext(StoreContext);
+
 
   const drawerRef = useRef(null);
   const dropdownRef = useRef(null);
@@ -67,14 +72,7 @@ const ProductFilter = ({
       <div className="hidden md:block md:sticky top-32 bg-white px-5 py-5 border border-gray-200 rounded-lg">
         <h4 className="text-lg font-semibold md:text-xl">Filter</h4>
         <div className="flex flex-col gap-5 mt-5">
-          {/* Search */}
-          <input
-            type="text"
-            placeholder="Search..."
-            value={filterSearch}
-            className="border border-gray-300 p-2 rounded"
-            onChange={(e) => setFilterSearch(e.target.value)}
-          />
+
 
           {/* Category */}
           <div ref={dropdownRef} className="border border-gray-300 p-2 rounded">
@@ -144,11 +142,53 @@ const ProductFilter = ({
             </div>
           </div>
 
+          {/* Star Rating */}
+          <ul className="border border-gray-300 rounded p-2 max-h-48 scrollbar overflow-y-auto space-y-2">
+            <li className="font-semibold text-gray-800 border-gray-300 border-b pb-1">
+              Star Rating
+            </li>
+            {[
+              { label: "All", value: 0 },
+              { label: "5★", value: 5 },
+              { label: "4★ & up", value: 4 },
+              { label: "3★ & up", value: 3 },
+              { label: "2★ & up", value: 2 },
+              { label: "1★ & up", value: 1 },
+            ].map((option) => {
+              const isActive = minStarRating === option.value;
+              return (
+                <li
+                  key={option.value}
+                  onClick={() => setMinStarRating(option.value)}
+                  className={`flex items-center gap-2 cursor-pointer p-2 rounded transition ${
+                    isActive
+                      ? "bg-[#e5b236] text-white"
+                      : "hover:bg-gray-100 text-gray-700"
+                  }`}
+                >
+                  <input
+                    type="checkbox"
+                    checked={isActive}
+                    readOnly
+                    className={`cursor-pointer w-4 h-4 rounded ${
+                      isActive
+                        ? "accent-white bg-[#e5b236] border-white"
+                        : "accent-[#e5b236]"
+                    }`}
+                  />
+                  <span className="text-sm select-none">{option.label}</span>
+                </li>
+              );
+            })}
+          </ul>
+
           {/* Sort */}
           <ul className="border border-gray-300 rounded p-2 max-h-48 overflow-y-auto space-y-2">
             <li className="font-semibold text-gray-800 border-gray-300 border-b pb-1">
               Sort By
             </li>
+
+
 
             {[
               { label: "Price: Low to High", value: "low-to-high" },
@@ -218,15 +258,8 @@ const ProductFilter = ({
 
           {/* Filter Content */}
           <div className="flex flex-col gap-5">
-            <input
-              type="text"
-              placeholder="Search..."
-              value={filterSearch}
-              onChange={(e) => setFilterSearch(e.target.value)}
-              className="border border-gray-300 p-2 rounded"
-            />
-            
             {/* ✅ LOGIC: Use dynamic categories in mobile dropdown */}
+
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
@@ -280,6 +313,22 @@ const ProductFilter = ({
               </div>
             </div>
 
+            <div className="flex flex-col gap-2">
+              <span className="font-semibold text-gray-800">Star Rating</span>
+              <select
+                value={minStarRating}
+                onChange={(e) => setMinStarRating(Number(e.target.value))}
+                className="border border-gray-300 p-2 rounded"
+              >
+                <option value={0}>All</option>
+                <option value={5}>5★</option>
+                <option value={4}>4★ & up</option>
+                <option value={3}>3★ & up</option>
+                <option value={2}>2★ & up</option>
+                <option value={1}>1★ & up</option>
+              </select>
+            </div>
+
             <select
               value={sortOrder}
               onChange={(e) => setSortOrder(e.target.value)}
@@ -289,6 +338,7 @@ const ProductFilter = ({
               <option value="low-to-high">Price: Low to High</option>
               <option value="high-to-low">Price: High to Low</option>
             </select>
+
           </div>
         </div>
       </div>

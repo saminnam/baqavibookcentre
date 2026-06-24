@@ -162,11 +162,7 @@ const Footer = () => {
               <a href="#" className="hover:underline text-[#fff]">
                 Baqavi Book Centre{" "}
               </a>
-<<<<<<< HEAD
-              All Rights Reserved 
-=======
               All Rights Reserved.
->>>>>>> 74fbb95 (updated)
             </span>
 
             <div className="flex mt-6 space-x-4 sm:justify-center sm:mt-0">
