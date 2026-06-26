@@ -15,11 +15,13 @@ import {
   Plus,
   Check,
 } from "lucide-react";
+import OrderSuccessPopup from "../../modals/OrderSuccessPopup";
 
 const CheckoutPage = () => {
   /* ---------------- CONTEXT ---------------- */
   const { profile, updateProfile } = useProfile();
-  const { cartItems, getTotalCartAmount, product_list } = useContext(StoreContext);
+  const { cartItems, getTotalCartAmount, product_list, clearCart } = useContext(StoreContext);
+
   const { user } = useContext(AuthContext);
 
   /* ---------------- STATE ---------------- */
@@ -34,6 +36,8 @@ const CheckoutPage = () => {
 
   const [errors, setErrors] = useState({});
   const [saveAddress, setSaveAddress] = useState(false);
+
+
   const [loading, setLoading] = useState(false);
   const [useSavedAddress, setUseSavedAddress] = useState(true); // Default to saved address if available
 
@@ -103,6 +107,8 @@ const CheckoutPage = () => {
   const savedAmount = totalMRP - totalPrice;
   const totalAmount = getTotalCartAmount();
 
+  const [showOrderSuccessPopup, setShowOrderSuccessPopup] = useState(false);
+
   const placeOrder = async () => {
     if (!orderProducts.length) {
       toast.warning("Cart is empty");
@@ -130,10 +136,17 @@ const CheckoutPage = () => {
       setForm({ name: "", email: "", phone: "", address: "", city: "", postalCode: "" });
       setSaveAddress(false);
 
-      toast.success("🎉 Order placed successfully!");
+      // Show animated success popup first
+      setShowOrderSuccessPopup(true);
+
+      // Clear cart immediately after order is placed
+      clearCart();
+
     } catch (error) {
+
       toast.error("❌ Order failed. Please try again.");
     } finally {
+
       setLoading(false);
     }
   };
@@ -149,6 +162,9 @@ const CheckoutPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 px-4 py-12">
+      {showOrderSuccessPopup && (
+        <OrderSuccessPopup onClose={() => setShowOrderSuccessPopup(false)} />
+      )}
       <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-10">
         {/* LEFT: FORM */}
         <div className="bg-white rounded-2xl shadow-xl p-8">

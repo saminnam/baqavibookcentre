@@ -78,27 +78,14 @@ const Navbar = () => {
     <>
       <header className="w-full content-font">
         {/* 🔹 Top Bar */}
-        <div className="hidden md:flex justify-between items-center bg-[#E5B236] text-sm px-6 py-2">
+        {/* <div className="hidden md:flex justify-between items-center bg-[#E5B236] text-sm px-6 py-2">
           <div className="flex gap-3 text-white">
-            {/* <Link
-              to="/become-a-seller"
-              className="hover:text-[#111825] transition-animation"
-            >
-              Become a Seller
-            </Link>
-            <span>|</span> */}
             <a
-              href="https://baqavibookcentre.com/"
+              href="https://list.baqavibookcentre.com/"
               className="hover:text-[#111825] transition-animation"
             >
               Fast Booking
             </a>
-            {/* <Link
-              to="/about-us"
-              className="hover:text-[#111825] transition-animation"
-            >
-              About Us
-            </Link> */}
             <span>|</span>
             <div
               onClick={() => openPolicy("return-policy")}
@@ -122,7 +109,7 @@ const Navbar = () => {
               Sign Up
             </Link>
           </div>
-        </div>
+        </div> */}
         {/* 🔹 Mobile Canvas Menu */}
         <div
           className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg transform transition-transform duration-300 z-50 ${

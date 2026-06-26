@@ -1,10 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/images/logo-bg.png";
 import { Facebook, Instagram, Youtube } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
+import axiosInstance from "../api/axiosInstance";
 
 const Footer = () => {
+  const [contactInfo, setContactInfo] = useState(null);
+
+  useEffect(() => {
+    const fetchContactInfo = async () => {
+      try {
+        const res = await axiosInstance.get("/contact/info");
+        setContactInfo(res.data);
+      } catch (err) {
+        console.error("Failed to fetch footer contact info", err);
+      }
+    };
+
+    fetchContactInfo();
+  }, []);
+
+  const facebookUrl = contactInfo?.facebook;
+  const whatsappChatUrl = contactInfo?.whatsappChat;
+  const whatsappChannelUrl = contactInfo?.whatsappChannel;
+  const youtubeUrl = contactInfo?.youtube;
+
+
   return (
     <footer className="w-full md:mt-16 mt-0 relative bg-[url('src/assets/images/bg-pattern/footer-pattern.webp')] bg-cover bg-center bg-no-repeat">
       <div className="bg-[#bc8600f5] absolute inset-0 z-10"></div>
@@ -167,36 +189,51 @@ const Footer = () => {
 
             <div className="flex mt-6 space-x-4 sm:justify-center sm:mt-0">
               {/* Facebook */}
-              <a className="group w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center transition-all duration-300 hover:border-indigo-600">
-                <Facebook
-                  size={18}
-                  className="text-white transition-all duration-300 group-hover:text-indigo-600"
-                />
-              </a>
+              {facebookUrl ? (
+                <a
+                  href={facebookUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center transition-all duration-300 hover:border-black transition-all duration-300"
+                >
+                  <Facebook
+                    size={18}
+                    className="text-white transition-all duration-300 group-hover:text-black transition-all duration-300"
+                  />
+                </a>
+              ) : null}
 
-              {/* Instagram */}
-              <a className="group w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center transition-all duration-300 hover:border-indigo-600">
-                <Instagram
-                  size={18}
-                  className="text-white transition-all duration-300 group-hover:text-indigo-600"
-                />
-              </a>
+              {/* Instagram (not available in backend model yet) */}
 
-              {/* WhatsApp */}
-              <a className="group w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center transition-all duration-300 hover:border-indigo-600">
-                <FaWhatsapp
-                  size={18}
-                  className="text-white group-hover:text-indigo-600"
-                />
-              </a>
+              {/* WhatsApp (prefer channel if present, fallback to chat) */}
+              {whatsappChannelUrl || whatsappChatUrl ? (
+                <a
+                  href={whatsappChannelUrl || whatsappChatUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center transition-all duration-300 hover:border-black transition-all duration-300"
+                >
+                  <FaWhatsapp
+                    size={18}
+                    className="text-white group-hover:text-black transition-all duration-300"
+                  />
+                </a>
+              ) : null}
 
               {/* YouTube */}
-              <a className="group w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center transition-all duration-300 hover:border-indigo-600">
-                <Youtube
-                  size={18}
-                  className="text-white transition-all duration-300 group-hover:text-indigo-600"
-                />
-              </a>
+              {youtubeUrl ? (
+                <a
+                  href={youtubeUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group w-9 h-9 rounded-full border border-gray-300 flex items-center justify-center transition-all duration-300 hover:border-black transition-all duration-300"
+                >
+                  <Youtube
+                    size={18}
+                    className="text-white transition-all duration-300 group-hover:text-black transition-all duration-300"
+                  />
+                </a>
+              ) : null}
             </div>
           </div>
         </div>
