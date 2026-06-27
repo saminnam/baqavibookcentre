@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "https://e-commerce-app-backend1.vercel.app/api",
+  baseURL: "",
   // baseURL: "http://localhost:5000/api",
 });
 
