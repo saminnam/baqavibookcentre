@@ -157,7 +157,7 @@ const Navbar = () => {
                   Re-Seller
                 </Link>
               </li> */}
-              <li
+              {/* <li
                 className="border-b border-gray-300 pb-2"
                 onClick={() => setMenuOpen(false)}
               >
@@ -167,7 +167,7 @@ const Navbar = () => {
                 >
                   Fast Booking
                 </a>
-              </li>
+              </li> */}
               <li
                 className="border-b border-gray-300 pb-2"
                 onClick={() => setMenuOpen(false)}
@@ -192,15 +192,15 @@ const Navbar = () => {
                   Become a Seller
                 </Link>
               </li>
-              <li
+              {/* <li
                 className="border-b border-gray-300 pb-2"
                 onClick={() => setMenuOpen(false)}
               >
                 <Link to="/about-us" className="block">
                   About Us
                 </Link>
-              </li>
-              <li
+              </li> */}
+              {/* <li
                 className="border-b border-gray-300 pb-2"
                 onClick={() => setMenuOpen(false)}
               >
@@ -210,8 +210,8 @@ const Navbar = () => {
                 >
                   Returns Policy
                 </div>
-              </li>
-              <li
+              </li> */}
+              {/* <li
                 className="border-b border-gray-300 pb-2"
                 onClick={() => setMenuOpen(false)}
               >
@@ -221,7 +221,7 @@ const Navbar = () => {
                 >
                   Terms & Conditions
                 </div>
-              </li>
+              </li> */}
             </ul>
             <ul className="mt-5 flex gap-2 justify-center text-center">
               <li className="bg-[#111825] w-full text-white py-2 px-4">
