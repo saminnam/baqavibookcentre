@@ -35,11 +35,13 @@ const StoreContextProvider = (props) => {
       const response = await axiosInstance.get("/products");
       // Handle both old format (array) and new format (object with products key)
       const productsData = response.data.products || response.data;
-      setProducts(productsData);
+      // Ensure productsData is an array
+      const productsArray = Array.isArray(productsData) ? productsData : [];
+      setProducts(productsArray);
       
       // Auto-adjust price range based on actual data
-      if (productsData.length > 0) {
-        const maxPrice = Math.max(...productsData.map(p => p.price));
+      if (productsArray.length > 0) {
+        const maxPrice = Math.max(...productsArray.map(p => p.price));
         setPriceRange([0, maxPrice]);
       }
     } catch (error) {

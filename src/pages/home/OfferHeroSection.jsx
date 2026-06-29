@@ -15,7 +15,9 @@ const OfferHeroSection = () => {
   const fetchOfferHeroSlides = async () => {
     try {
       const { data } = await axiosInstance.get("/offerHero-slides");
-      setHeroOfferSlides(data);
+      // Ensure data is an array
+      const slidesArray = Array.isArray(data) ? data : (data.slides || []);
+      setHeroOfferSlides(slidesArray);
     } catch (error) {
       console.error("Failed to fetch offer hero slides:", error);
       setHeroOfferSlides([]);

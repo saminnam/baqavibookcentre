@@ -18,7 +18,9 @@ const Hero = () => {
   const fetchHeroSlides = async () => {
     try {
       const { data } = await axiosInstance.get("/hero-slides");
-      setHeroSlides(data);
+      // Ensure data is an array
+      const slidesArray = Array.isArray(data) ? data : (data.slides || []);
+      setHeroSlides(slidesArray);
     } catch (error) {
       console.error("Failed to fetch hero slides:", error);
       // Fallback to empty array if API fails

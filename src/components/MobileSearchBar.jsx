@@ -103,6 +103,10 @@ const MobileSearchBar = ({
             onChange={(e) => {
               setSearchValue(e.target.value);
               setShowSuggestions(true);
+              // Clear URL when search input is cleared
+              if (e.target.value.trim() === "") {
+                navigate("/products");
+              }
             }}
             onFocus={() => setShowSuggestions(true)}
             onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
