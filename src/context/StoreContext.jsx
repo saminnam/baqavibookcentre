@@ -113,11 +113,6 @@ const StoreContextProvider = (props) => {
 
   useEffect(() => {
     if (user) fetchCart();
-    else {
-      // Clear cart from website when user logs out
-      setCartItems({});
-      localStorage.removeItem("cartItems");
-    }
   }, [user]);
 
   const addToCart = (product) => {
