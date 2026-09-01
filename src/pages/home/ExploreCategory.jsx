@@ -85,16 +85,10 @@ const ExploreCategory = () => {
                 >
                   <div className="flex-shrink-0 cursor-pointer group w-[80px] md:w-[100px] mx-auto">
                     <div className="bg-slate-200 p-2 rounded-lg overflow-hidden h-[60px] md:h-[80px]">
-                      {getCategoryImage(category) ? (
+                      {getCategoryImage(category) && (
                         <img
                           className="w-full h-full rounded-lg transition-transform duration-300 group-hover:scale-105 object-cover"
                           src={getCategoryImage(category)}
-                          alt={getCategoryName(category)}
-                        />
-                      ) : (
-                        <img
-                          className="w-full h-full rounded-lg transition-transform duration-300 group-hover:scale-105 object-cover"
-                          src={"https://previews.123rf.com/images/ionutparvu/ionutparvu1612/ionutparvu161201044/67602567-category-stamp-sign-text-word-logo-red.jpg"}
                           alt={getCategoryName(category)}
                         />
                       )}
