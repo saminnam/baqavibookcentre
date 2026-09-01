@@ -11,7 +11,15 @@ const ExploreCategory = () => {
   const navigate = useNavigate();
   const { categories, products } = useContext(StoreContext);
 
-  const getCategoryImage = (categoryName) => {
+  const getCategoryImage = (category) => {
+    // If category is an object with image property, use it
+    if (typeof category === 'object' && category.image) {
+      return category.image;
+    }
+
+    // Get category name (handle both object and string)
+    const categoryName = typeof category === 'object' ? category.name : category;
+
     // First try to use first product's image from this category (from API)
     if (products && products.length > 0) {
       const firstProduct = products.find(p => p.category === categoryName);
@@ -28,11 +36,19 @@ const ExploreCategory = () => {
     return null;
   };
 
-  const filteredCategories = categories ? categories.filter(cat => cat !== "All") : [];
+  const getCategoryName = (category) => {
+    return typeof category === 'object' ? category.name : category;
+  };
+
+  const filteredCategories = categories ? categories.filter(cat => {
+    const name = typeof cat === 'object' ? cat.name : cat;
+    return name !== "All";
+  }) : [];
   const hasEnoughSlides = filteredCategories.length > 2;
 
   const handleCategorySelect = (category) => {
-    navigate(`/products?category=${encodeURIComponent(category)}`);
+    const categoryName = typeof category === 'object' ? category.name : category;
+    navigate(`/products?category=${encodeURIComponent(categoryName)}`);
   };
 
   return (
@@ -73,18 +89,18 @@ const ExploreCategory = () => {
                         <img
                           className="w-full h-full rounded-lg transition-transform duration-300 group-hover:scale-105 object-cover"
                           src={getCategoryImage(category)}
-                          alt={category}
+                          alt={getCategoryName(category)}
                         />
                       ) : (
                         <img
                           className="w-full h-full rounded-lg transition-transform duration-300 group-hover:scale-105 object-cover"
                           src={"https://previews.123rf.com/images/ionutparvu/ionutparvu1612/ionutparvu161201044/67602567-category-stamp-sign-text-word-logo-red.jpg"}
-                          alt={category}
+                          alt={getCategoryName(category)}
                         />
                       )}
                     </div>
                     <p className="text-[12px] md:text-[14px] mt-2 font-medium text-gray-800">
-                      {category}
+                      {getCategoryName(category)}
                     </p>
                   </div>
                 </div>

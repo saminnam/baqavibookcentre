@@ -57,7 +57,7 @@ const StoreContextProvider = (props) => {
       const response = await axiosInstance.get("/categories");
       const categoriesData = response.data || [];
       if (Array.isArray(categoriesData) && categoriesData.length > 0) {
-        setCategories(categoriesData.map((category) => category.name));
+        setCategories(categoriesData);
       } else {
         setCategories([...new Set(products.map((product) => product.category).filter(Boolean))]);
       }
@@ -200,7 +200,7 @@ const StoreContextProvider = (props) => {
 
 
 
-  const categoryOptions = ["All", ...new Set(categories)];
+  const categoryOptions = ["All", ...new Set(categories.map(cat => typeof cat === 'object' ? cat.name : cat))];
 
   const contextValue = {
     menuOpen, setMenuOpen,
