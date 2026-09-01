@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { StoreContext } from "../../context/StoreContext";
 import { category_list } from "../../data/productData";
+import axiosInstance from "../../api/axiosInstance";
 // ✅ Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
@@ -11,10 +12,32 @@ const ExploreCategory = () => {
   const navigate = useNavigate();
   const { categories, products } = useContext(StoreContext);
 
+  const getCategoryImageUrl = (image) => {
+    if (!image) return "";
+    if (typeof image !== "string") return "";
+
+    // Absolute URL
+    if (image.startsWith("http://") || image.startsWith("https://")) return image;
+
+    // Get base URL from axios instance
+    const baseUrl = axiosInstance.defaults.baseURL?.replace(/\/api\/?$/, "") || "";
+
+    // Normalize any leading slashes: uploads/x -> uploads/x, /uploads/x -> uploads/x, etc.
+    const normalized = image.replace(/^\/+/, "");
+
+    // If backend stores a full relative path like uploads/<filename>
+    if (normalized.startsWith("uploads/")) {
+      return `${baseUrl}/${normalized}`;
+    }
+
+    // Otherwise treat it as a raw filename returned by multer (e.g. 12345.webp)
+    return `${baseUrl}/uploads/${normalized}`;
+  };
+
   const getCategoryImage = (category) => {
     // If category is an object with image property, use it
     if (typeof category === 'object' && category.image) {
-      return category.image;
+      return getCategoryImageUrl(category.image);
     }
 
     // Get category name (handle both object and string)
@@ -25,13 +48,13 @@ const ExploreCategory = () => {
       const firstProduct = products.find(p => p.category === categoryName);
       if (firstProduct && firstProduct.image) return firstProduct.image;
     }
-    
+
     // Fallback: try static category_list
     if (category_list) {
       const categoryData = category_list.find(c => c.cat_name === categoryName);
       if (categoryData && categoryData.cat_img) return categoryData.cat_img;
     }
-    
+
     // Default fallback
     return null;
   };
