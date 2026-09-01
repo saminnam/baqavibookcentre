@@ -22,7 +22,7 @@ import PolicyPopup from "../modals/PolicyPopup";
 import { AuthContext } from "../context/AuthContext";
 const Navbar = () => {
   const [categoryOpen, setCategoryOpen] = useState(false);
-  const { menuOpen, setMenuOpen, cartItems, categories, products } = useContext(StoreContext);
+  const { menuOpen, setMenuOpen, cartItems, categoryOptions, products } = useContext(StoreContext);
 
   const navigate = useNavigate();
   const [navbarSearch, setNavbarSearch] = useState("");
@@ -309,7 +309,7 @@ const Navbar = () => {
               : "opacity-0 scale-y-0 pointer-events-none"
           }`}
               >
-                {categories.map((category, index) => (
+                {categoryOptions.map((category, index) => (
                   <ul className="text-sm" key={index}>
                     <li
                       onClick={() => handleCategorySelect(category)}

@@ -20,10 +20,10 @@ const ProductFilter = ({
   // ✅ Extract live data and states from StoreContext
   const {
 
-    showFilter, 
-    setShowFilter, 
+    showFilter,
+    setShowFilter,
     product_list, // Now coming from API via Context
-    categories    // Now dynamically generated in Context
+    categoryOptions    // Now dynamically generated in Context
   } = useContext(StoreContext);
 
 
@@ -81,7 +81,7 @@ const ProductFilter = ({
             </h4>
             <ul className="p-2 max-h-60 scrollbar overflow-y-auto w-full">
               {/* ✅ LOGIC: Map through dynamic categories from API */}
-              {categories.map((cat, i) => (
+              {categoryOptions.map((cat, i) => (
                 <li
                   key={i}
                   onClick={() => handleCategorySelect(cat)}
@@ -265,7 +265,7 @@ const ProductFilter = ({
               onChange={(e) => setSelectedCategory(e.target.value)}
               className="border border-gray-300 p-2 rounded"
             >
-              {categories.map((cat, i) => (
+              {categoryOptions.map((cat, i) => (
                 <option key={i} value={cat}>
                   {cat}
                 </option>

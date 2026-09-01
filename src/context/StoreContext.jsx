@@ -208,7 +208,8 @@ const StoreContextProvider = (props) => {
     products,
     product_list: products, // Kept key name 'product_list' so your components don't break
     filteredProducts,
-    categories: categoryOptions,
+    categories: categories, // Pass full category objects with image data
+    categoryOptions, // Also provide the string-only version for components that need it
     clearCart,
     cartItems,
     addToCart,
