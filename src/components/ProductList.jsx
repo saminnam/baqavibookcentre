@@ -13,7 +13,6 @@ const ProductListPage = () => {
 
   const {
     filteredProducts,
-    categories,
     selectedCategory,
     setSelectedCategory,
     sortOrder,
@@ -84,7 +83,6 @@ const ProductListPage = () => {
           <ProductFilter
             showFilter={showFilter}
             setShowFilter={setShowFilter}
-            categories={categories}
             selectedCategory={selectedCategory}
             setSelectedCategory={setSelectedCategory}
             priceRange={priceRange}

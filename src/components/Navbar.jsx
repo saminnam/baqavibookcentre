@@ -452,7 +452,7 @@ const Navbar = () => {
       </div>
       <div className="sticky top-0 z-40 bg-white">
         <MobileSearchBar
-          categories={categories}
+          categories={categoryOptions}
           searchValue={navbarSearch}
           setSearchValue={setNavbarSearch}
           handleSearch={handleSearch}
