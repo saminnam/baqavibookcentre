@@ -12,6 +12,7 @@ const ProductDetail = () => {
   const { product_list, addToCart } = useContext(StoreContext);
   const product = product_list.find((p) => p.slug === slug);
   const [selectedImg, setSelectedImg] = useState(product?.images?.[0]);
+  const [isDescExpanded, setIsDescExpanded] = useState(false);
 
   // ✅ Reset selected image when changing product (related products click)
   useEffect(() => {
@@ -24,6 +25,14 @@ const ProductDetail = () => {
       document.title = `${product.name} | Baqavi Book Centre`;
     }
   }, [product]);
+
+  // Description truncation logic
+  const DESCRIPTION_LIMIT = 150;
+  const description = product?.desc || "";
+  const shouldTruncate = description.length > DESCRIPTION_LIMIT;
+  const displayDescription = isDescExpanded || !shouldTruncate
+    ? description
+    : description.slice(0, DESCRIPTION_LIMIT) + "...";
 
   if (!product)
     return <div className="text-center mt-10">Product not found</div>;
@@ -80,7 +89,17 @@ const ProductDetail = () => {
             <h2 className="text-2xl md:text-3xl font-semibold">
               {product.name}
             </h2>
-            <p className="text-gray-500">{product.desc}</p>
+            <div>
+              <p className="text-gray-500 text-justify">{displayDescription}</p>
+              {shouldTruncate && (
+                <button
+                  onClick={() => setIsDescExpanded(!isDescExpanded)}
+                  className="text-[#E5B236] cursor-pointer font-semibold hover:text-[#c9962a] transition mt-1"
+                >
+                  {isDescExpanded ? "Read Less" : "Read More"}
+                </button>
+              )}
+            </div>
             <div className="flex flex-col gap-2 my-8 p-5 bg-white border border-slate-200 rounded">
               <h5 className="font-semibold text-lg">More Details:</h5>
               <p className="text-gray-500">{product.productDetails}</p>
