@@ -9,7 +9,7 @@ const ProductListPage = () => {
   const [showFilter, setShowFilter] = useState(false);
   const [searchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 10;
+  const productsPerPage = 20;
 
   const {
     filteredProducts,

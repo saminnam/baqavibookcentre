@@ -43,10 +43,10 @@ const CategorySwiperSection = () => {
                 {category}
               </h2>
               <div className="flex gap-3">
-                <button className={`swiper-button ${navPrev} text-[#e5b236]`}>
+                <button className={`swiper-button cursor-pointer ${navPrev} text-[#e5b236]`}>
                   <MoveLeft size={18} />
                 </button>
-                <button className={`swiper-button ${navNext} text-[#e5b236]`}>
+                <button className={`swiper-button cursor-pointer ${navNext} text-[#e5b236]`}>
                   <MoveRight size={18} />
                 </button>
               </div>
