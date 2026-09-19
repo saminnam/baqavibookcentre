@@ -184,7 +184,16 @@ const StoreContextProvider = (props) => {
         const productNameNoSpace = (p.name || "")
           .toLowerCase()
           .replace(/\s+/g, "");
-        return productNameNoSpace.includes(searchTermNoSpace);
+        const categoryNoSpace = (p.category || "")
+          .toLowerCase()
+          .replace(/\s+/g, "");
+        const authorNoSpace = (p.author || "")
+          .toLowerCase()
+          .replace(/\s+/g, "");
+        
+        return productNameNoSpace.includes(searchTermNoSpace) ||
+               categoryNoSpace.includes(searchTermNoSpace) ||
+               authorNoSpace.includes(searchTermNoSpace);
       });
     }
 

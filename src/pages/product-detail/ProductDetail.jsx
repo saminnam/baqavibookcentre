@@ -99,6 +99,17 @@ const ProductDetail = () => {
                   {isDescExpanded ? "Read Less" : "Read More"}
                 </button>
               )}
+              
+              {/* Display multiple descriptions */}
+              {product.descriptions && product.descriptions.length > 0 && product.descriptions.some(d => d.trim() !== "") && (
+                <div className="mt-4 space-y-2">
+                  {product.descriptions.filter(d => d.trim() !== "").map((desc, index) => (
+                    <p key={index} className="text-gray-500 text-justify">
+                      {desc}
+                    </p>
+                  ))}
+                </div>
+              )}
             </div>
             <div className="flex flex-col gap-2 my-8 p-5 bg-white border border-slate-200 rounded">
               <h5 className="font-semibold text-lg">More Details:</h5>
