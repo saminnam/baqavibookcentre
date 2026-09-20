@@ -1,8 +1,9 @@
 import { useContext, useEffect, useState } from "react";
 import { StoreContext } from "../context/StoreContext";
 import { Link, useSearchParams } from "react-router-dom";
-import { Plus, Star, ChevronLeft, ChevronRight } from "lucide-react";
+import { Plus, Star, ChevronLeft, ChevronRight, Filter } from "lucide-react";
 import ProductCardSkeleton from "../skeleton-loader/ProductCardSkeleton";
+import ProductFilter from "./ProductFilter";
 
 const ProductListPage = () => {
   const [searchParams] = useSearchParams();
@@ -21,8 +22,8 @@ const ProductListPage = () => {
     setMinStarRating,
     filterSearch,
     setFilterSearch,
-
-
+    showFilter,
+    setShowFilter,
     addToCart,
     loading,
   } = useContext(StoreContext);
@@ -100,10 +101,30 @@ const ProductListPage = () => {
 
   return (
     <div className="container mx-auto p-2 md:p-6 content-font">
+      {/* Mobile Filter Button */}
+      {/* <div className="lg:hidden mb-4">
+        <button
+          onClick={() => setShowFilter(true)}
+          className="flex items-center gap-2 bg-[#E5B236] text-white px-4 py-2 rounded-lg hover:bg-[#d49e2e] transition-colors"
+        >
+          <Filter size={20} />
+          <span>Filter</span>
+        </button>
+      </div> */}
+
       <div className="flex lg:flex-row gap-10 flex-col">
-        {/* Filter Sidebar - Only show placeholder for desktop layout */}
+        {/* Filter Sidebar - Desktop */}
         <div className="hidden lg:block lg:w-1/4">
-          {/* Desktop filter is handled by the global ProductFilter component */}
+          <ProductFilter
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+            priceRange={priceRange}
+            setPriceRange={setPriceRange}
+            sortOrder={sortOrder}
+            setSortOrder={setSortOrder}
+            minStarRating={minStarRating}
+            setMinStarRating={setMinStarRating}
+          />
         </div>
 
         {/* Product Grid Section */}
@@ -282,6 +303,20 @@ const ProductListPage = () => {
             </div>
           )}
         </div>
+      </div>
+
+      {/* Mobile Filter Component */}
+      <div className="lg:hidden">
+        <ProductFilter
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+          priceRange={priceRange}
+          setPriceRange={setPriceRange}
+          sortOrder={sortOrder}
+          setSortOrder={setSortOrder}
+          minStarRating={minStarRating}
+          setMinStarRating={setMinStarRating}
+        />
       </div>
     </div>
   );

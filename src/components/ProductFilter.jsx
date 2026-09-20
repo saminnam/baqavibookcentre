@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useContext, useState } from "react";
 import { StoreContext } from "../context/StoreContext";
 import { X } from "lucide-react";
-import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 
 const ProductFilter = ({
@@ -31,8 +31,6 @@ const ProductFilter = ({
   const dropdownRef = useRef(null);
   const [maxPrice, setMaxPrice] = useState(0);
   const navigate = useNavigate();
-  const location = useLocation();
-  const isProductsPage = location.pathname === "/products";
 
   // ✅ LOGIC: Update max price whenever the API product list changes
   useEffect(() => {
@@ -98,9 +96,8 @@ const ProductFilter = ({
 
   return (
     <>
-      {/* Desktop Filter - Only show on products page */}
-      {isProductsPage && (
-        <div className="hidden md:block md:sticky top-32 bg-white px-5 py-5 border border-gray-200 rounded-lg">
+      {/* Desktop Filter */}
+      <div className="hidden lg:block bg-white px-5 py-5 border border-gray-200 rounded-lg">
         <h4 className="text-lg font-semibold md:text-xl">Filter</h4>
         <div className="flex flex-col gap-5 mt-5">
 
@@ -253,11 +250,10 @@ const ProductFilter = ({
           </ul>
         </div>
       </div>
-      )}
 
       {/* Mobile Off-Canvas Filter */}
       <div
-        className={`fixed inset-0 z-50 flex justify-end transition-all duration-300 ${
+        className={`lg:hidden fixed inset-0 z-50 flex justify-end transition-all duration-300 ${
           showFilter
             ? "opacity-100 pointer-events-auto"
             : "opacity-0 pointer-events-none"
@@ -270,8 +266,6 @@ const ProductFilter = ({
           }`}
           onClick={() => setShowFilter(false)}
         ></div>
-
-        {/* Drawer */}
         <div
           ref={drawerRef}
           className={`bg-white h-full w-3/4 sm:w-1/2 p-5 overflow-y-auto transform transition-transform duration-300 ${
