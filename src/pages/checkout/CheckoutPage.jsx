@@ -170,7 +170,7 @@ const CheckoutPage = () => {
         <div className="bg-white rounded-2xl shadow-xl p-8">
           <div className="flex items-center gap-3 mb-6">
             <CreditCard className="text-yellow-500" />
-            <h2 className="text-2xl font-semibold content-font">Shipping Details</h2>
+            <h2 className="text-lg md:text-xl font-semibold content-font">Shipping Details</h2>
           </div>
 
           {/* Address Selection */}
@@ -191,11 +191,10 @@ const CheckoutPage = () => {
                       postalCode: profile.postalCode || "",
                     });
                   }}
-                  className={`p-3 border-2 rounded-lg cursor-pointer transition ${
-                    useSavedAddress
+                  className={`p-3 border-2 rounded-lg cursor-pointer transition ${useSavedAddress
                       ? "border-yellow-500 bg-yellow-100"
                       : "border-gray-200 hover:border-yellow-300"
-                  }`}
+                    }`}
                 >
                   <div className="flex items-start gap-3">
                     <div className="mt-1">
@@ -228,11 +227,10 @@ const CheckoutPage = () => {
                       postalCode: "",
                     });
                   }}
-                  className={`p-3 border-2 rounded-lg cursor-pointer transition ${
-                    !useSavedAddress
+                  className={`p-3 border-2 rounded-lg cursor-pointer transition ${!useSavedAddress
                       ? "border-yellow-500 bg-yellow-100"
                       : "border-gray-200 hover:border-yellow-300"
-                  }`}
+                    }`}
                 >
                   <div className="flex items-start gap-3">
                     <div className="mt-1">
@@ -288,22 +286,24 @@ const CheckoutPage = () => {
         </div>
 
         {/* RIGHT: SUMMARY */}
-        <div className="bg-white rounded-2xl shadow-xl p-8 sticky top-24 h-fit">
-          <h3 className="text-xl font-semibold mb-6 border-b border-gray-300 pb-6 content-font">🧾 Order Summary</h3>
+        <div className="bg-white rounded-2xl shadow-xl p-8 sticky top-24">
+          <h3 className="md:text-xl text-lg font-semibold mb-6 border-b border-gray-300 pb-6 content-font">🧾 Order Summary</h3>
 
-          {orderProducts.length === 0 ? (
-             <p className="text-gray-500 text-center py-4">Your cart is empty</p>
-          ) : (
-            orderProducts.map((item) => (
-              <div key={item._id} className="flex justify-between mb-3">
-                <div>
-                  <p className="font-medium">{item.name}</p>
-                  <p className="text-sm text-gray-500">Qty: {item.quantity}</p>
+          <div className="h-[40vh] overflow-y-scroll">
+            {orderProducts.length === 0 ? (
+              <p className="text-gray-500 text-center py-4">Your cart is empty</p>
+            ) : (
+              orderProducts.map((item) => (
+                <div key={item._id} className="flex justify-between mb-3">
+                  <div>
+                    <p className="font-medium text-[13px] md:text-sm">{item.name}</p>
+                    <p className="text-[13px] text-gray-500">Qty: {item.quantity}</p>
+                  </div>
+                  <p className="font-semibold text-[#E5B236] text-[13px] md:text-sm">₹{item.total}</p>
                 </div>
-                <p className="font-semibold text-[#E5B236]">₹{item.total}</p>
-              </div>
-            ))
-          )}
+              ))
+            )}
+          </div>
 
           <div className="pt-4 mt-4 border-t border-gray-300">
             <div className="space-y-2 font-medium">
@@ -316,7 +316,7 @@ const CheckoutPage = () => {
                 <span>₹{savedAmount}</span>
               </div>
             </div>
-            <div className="flex justify-between border-t border-gray-300 mt-4 pt-4 font-bold text-lg">
+            <div className="flex justify-between border-t border-gray-300 mt-4 pt-4 font-bold text-[16px]">
               <span>Total Payable</span>
               <span className="text-[#E5B236]">₹{totalAmount}</span>
             </div>
