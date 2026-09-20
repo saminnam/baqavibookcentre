@@ -90,7 +90,12 @@ const RelatedProducts = ({ category, currentProductId }) => {
                               ))}
                             </div>
                             <button
-                              onClick={() => addToCart(item)}
+                              type="button"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                addToCart(item);
+                              }}
                               className="flex cursor-pointer items-center border  border-slate-[#111825] justify-center text-[#111825] p-1 shadow-md bg-white rounded transition"
                             >
                               <Plus className="w-3 transition-transform duration-300 hover:rotate-180 h-3 md:w-5 md:h-5" />

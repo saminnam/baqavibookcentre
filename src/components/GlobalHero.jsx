@@ -17,7 +17,7 @@ const GlobalHero = ({ title }) => {
   };
 
   return (
-    <section className="relative px-5 md:px-8 py-10 md:py-16 bg-gray-100 w-full h-auto bg-cover bg-center">
+    <section className="relative px-5 md:px-8 py-10 md:py-16 bg-gray-100 w-full h-auto bg-cover bg-center flex-shrink-0">
       {/* IMAGE OVERLAY */}
       {/* <div className="absolute inset-0 w-full h-full">
         <img

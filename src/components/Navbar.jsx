@@ -184,14 +184,14 @@ const Navbar = () => {
                   Contact Us
                 </Link>
               </li>
-              <li
+              {/* <li
                 className="border-b border-gray-300 pb-2"
                 onClick={() => setMenuOpen(false)}
               >
                 <Link to="/become-a-seller" className="block">
                   Become a Seller
                 </Link>
-              </li>
+              </li> */}
               {/* <li
                 className="border-b border-gray-300 pb-2"
                 onClick={() => setMenuOpen(false)}
@@ -224,16 +224,22 @@ const Navbar = () => {
               </li> */}
             </ul>
             <ul className="mt-5 flex gap-2 justify-center text-center">
-              <li className="bg-[#111825] w-full text-white py-2 px-4">
-                <Link to="/auth" className="flex  items-center justify-between">
-                  <span>Sign In</span> <LogIn size={18} />
-                </Link>
-              </li>
-              <li className="bg-[#E5B236] text-white w-full py-2 px-4">
-                <Link to="/auth" className="flex  items-center justify-between">
-                  <span>Signup</span> <LogIn size={18} />
-                </Link>
-              </li>
+              {user ? (
+                <li className="bg-[#E5B236] text-white w-full py-2 px-4">
+                  <button
+                    onClick={handleLogout}
+                    className="flex items-center justify-between w-full"
+                  >
+                    <span>Logout</span> <LogOut size={18} />
+                  </button>
+                </li>
+              ) : (
+                <li className="bg-[#111825] w-full text-white py-2 px-4">
+                  <Link to="/auth" className="flex items-center justify-between">
+                    <span>Sign In</span> <LogIn size={18} />
+                  </Link>
+                </li>
+              )}
             </ul>
           </div>
         </div>
@@ -270,12 +276,12 @@ const Navbar = () => {
             {/* <Link to="/" className="hover:text-[#E5B236] transition-animation">
               Re-seller
             </Link> */}
-            <Link
+            {/* <Link
               to="/become-a-seller"
               className="hover:text-[#E5B236] transition-animation"
             >
               Become a Seller
-            </Link>
+            </Link> */}
             <Link
               to="/blogs"
               className="hover:text-[#E5B236] transition-animation"
@@ -406,10 +412,10 @@ const Navbar = () => {
             <Link to="/cart" className="relative">
               <ShoppingCart size={22} />
               <div
-                className={`absolute -top-2 -right-2 text-xs font-bold rounded-full flex items-center justify-center ${
+                className={`cart-badge bg-[#E5B236] text-white ${
                   Object.keys(cartItems).length > 0
-                    ? "w-5 h-5 bg-[#E5B236] text-white"
-                    : "w-0 h-0"
+                    ? "opacity-100 scale-100"
+                    : "opacity-0 scale-0"
                 }`}
               >
                 {Object.keys(cartItems).length > 0

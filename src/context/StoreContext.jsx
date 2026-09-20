@@ -122,7 +122,6 @@ const StoreContextProvider = (props) => {
       saveCartToBackend(updated);
       return updated;
     });
-    toast.success(`${product.name} added to cart!`);
   };
 
   const removeFromCart = (product, removeAll = false) => {

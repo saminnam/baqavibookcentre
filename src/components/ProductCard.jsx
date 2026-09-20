@@ -51,7 +51,15 @@ const ProductCard = ({ product }) => {
       <p className="text-gray-700 mt-1 mb-2">₹{Number(product.price || 0).toLocaleString("en-IN")}</p>
 
       <button
-        onClick={() => addToCart(product)}
+        type="button"
+        onMouseDown={(e) => e.preventDefault()}
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          if (inStock && !isHidden) {
+            addToCart(product);
+          }
+        }}
         disabled={!inStock || isHidden}
         className="w-full rounded-md bg-yellow-500 py-2 text-white transition hover:bg-yellow-600 disabled:cursor-not-allowed disabled:bg-gray-400"
       >

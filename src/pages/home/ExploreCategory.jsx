@@ -116,7 +116,7 @@ const ExploreCategory = () => {
                         />
                       )}
                     </div>
-                    <p className="text-[12px] md:text-[14px] mt-2 font-medium text-gray-800">
+                    <p className="text-[10px] md:text-[12px] mt-2 font-medium text-gray-800">
                       {getCategoryName(category)}
                     </p>
                   </div>

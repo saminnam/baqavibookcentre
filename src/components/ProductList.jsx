@@ -2,14 +2,12 @@ import { useContext, useEffect, useState } from "react";
 import { StoreContext } from "../context/StoreContext";
 import { Link, useSearchParams } from "react-router-dom";
 import { Plus, Star, ChevronLeft, ChevronRight } from "lucide-react";
-import ProductFilter from "./ProductFilter";
 import ProductCardSkeleton from "../skeleton-loader/ProductCardSkeleton";
 
 const ProductListPage = () => {
-  const [showFilter, setShowFilter] = useState(false);
   const [searchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 20;
+  const productsPerPage = 40;
 
   const {
     filteredProducts,
@@ -40,17 +38,27 @@ const ProductListPage = () => {
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
 
   const handleNext = () => {
-    if (currentPage < totalPages) setCurrentPage((prev) => prev + 1);
+    if (currentPage < totalPages) {
+      setCurrentPage((prev) => prev + 1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   const handlePrev = () => {
-    if (currentPage > 1) setCurrentPage((prev) => prev - 1);
+    if (currentPage > 1) {
+      setCurrentPage((prev) => prev - 1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   // ✅ Handle query params
   useEffect(() => {
     const search = searchParams.get("search");
     const category = searchParams.get("category");
+    const minPrice = searchParams.get("minPrice");
+    const maxPrice = searchParams.get("maxPrice");
+    const minRating = searchParams.get("minRating");
+    const sort = searchParams.get("sort");
 
     // Sync header/mobile search into StoreContext immediately.
     // - if query param removed => clear search filter
@@ -68,8 +76,23 @@ const ProductListPage = () => {
       setSelectedCategory("All");
     }
 
+    // Sync price range
+    if (minPrice || maxPrice) {
+      setPriceRange([Number(minPrice) || 0, Number(maxPrice) || 10000]);
+    }
+
+    // Sync star rating
+    if (minRating) {
+      setMinStarRating(Number(minRating));
+    }
+
+    // Sync sort order
+    if (sort) {
+      setSortOrder(sort);
+    }
+
     setCurrentPage(1);
-  }, [searchParams, setSelectedCategory, setFilterSearch]);
+  }, [searchParams, setSelectedCategory, setFilterSearch, setPriceRange, setMinStarRating, setSortOrder]);
 
 
 
@@ -78,25 +101,13 @@ const ProductListPage = () => {
   return (
     <div className="container mx-auto p-2 md:p-6 content-font">
       <div className="flex lg:flex-row gap-10 flex-col">
-        {/* Filter Sidebar */}
-        <div>
-          <ProductFilter
-            showFilter={showFilter}
-            setShowFilter={setShowFilter}
-            selectedCategory={selectedCategory}
-            setSelectedCategory={setSelectedCategory}
-            priceRange={priceRange}
-            setPriceRange={setPriceRange}
-            sortOrder={sortOrder}
-            setSortOrder={setSortOrder}
-            minStarRating={minStarRating}
-            setMinStarRating={setMinStarRating}
-          />
-
+        {/* Filter Sidebar - Only show placeholder for desktop layout */}
+        <div className="hidden lg:block lg:w-1/4">
+          {/* Desktop filter is handled by the global ProductFilter component */}
         </div>
 
         {/* Product Grid Section */}
-        <div>
+        <div className="w-full lg:w-3/4">
           <div className="grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 md:gap-6">
             {loading ? (
               Array.from({ length: 15 }).map((_, i) => (
@@ -172,7 +183,15 @@ const ProductListPage = () => {
                               ))}
                             </div>
                             <button
-                              onClick={() => !isHidden && addToCart(product)}
+                              type="button"
+                              onMouseDown={(e) => e.preventDefault()}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                if (!isHidden) {
+                                  addToCart(product);
+                                }
+                              }}
                               disabled={isHidden}
                               className={`flex items-center border border-slate-[#111825] justify-center p-1 shadow-md rounded transition ${
                                 isHidden

@@ -39,7 +39,7 @@ const CategorySwiperSection = () => {
           <div key={category} className="space-y-6 container mx-auto">
             {/* 🔹 Section Header */}
             <div className="flex justify-between items-center">
-              <h2 className="text-xl md:text-2xl font-semibold text-gray-900">
+              <h2 className="text-[14px] md:text-xl font-semibold text-gray-900">
                 {category}
               </h2>
               <div className="flex gap-3">
@@ -135,7 +135,14 @@ const CategorySwiperSection = () => {
                         return (
                           <>
                             <button
-                              onClick={() => !isHidden && addToCart(product)}
+                              type="button"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                if (!isHidden) {
+                                  addToCart(product);
+                                }
+                              }}
                               disabled={isHidden}
                               className={`flex items-center border border-slate-[#111825] justify-center p-1 shadow-md rounded transition ${
                                 isHidden

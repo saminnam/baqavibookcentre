@@ -174,9 +174,16 @@ const ProductDetail = () => {
             {/* Add to Cart */}
             <div className="flex gap-3 pt-4 content-font">
               <button
-                onClick={() =>
-                  product?.status === "inactive" ? null : addToCart(product)
-                }
+                type="button"
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  if (product?.status !== "inactive") {
+                    addToCart(product);
+                  }
+                  return false;
+                }}
                 disabled={product?.status === "inactive"}
                 className={`bg-[#111825] cursor-pointer flex gap-2 items-center text-white px-5 py-2 rounded hover:bg-[#E5B236] transition ${
                   product?.status === "inactive"

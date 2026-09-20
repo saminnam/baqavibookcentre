@@ -7,10 +7,13 @@ import {
 } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import FloatingMenu from "./components/FloatingMenu";
+import ProductFilter from "./components/ProductFilter";
 import Home from "./pages/home/Home";
 import Footer from "./components/Footer";
 import ToastNotification from "./modals/ToastNotification";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { StoreContext } from "./context/StoreContext";
+import { useContext } from "react";
 
 // Lazy load components for better performance
 const ProductDetail = lazy(() => import("./pages/product-detail/ProductDetail"));
@@ -33,6 +36,17 @@ const LoadingFallback = () => (
 );
 
 const App = () => {
+  const {
+    selectedCategory,
+    setSelectedCategory,
+    priceRange,
+    setPriceRange,
+    sortOrder,
+    setSortOrder,
+    minStarRating,
+    setMinStarRating,
+  } = useContext(StoreContext);
+
   const ScrollToTop = () => {
     const { pathname } = useLocation();
 
@@ -82,6 +96,16 @@ const App = () => {
       </Suspense>
       <Footer />
       <FloatingMenu />
+      <ProductFilter
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
+        priceRange={priceRange}
+        setPriceRange={setPriceRange}
+        sortOrder={sortOrder}
+        setSortOrder={setSortOrder}
+        minStarRating={minStarRating}
+        setMinStarRating={setMinStarRating}
+      />
       <ToastNotification />
     </>
   );

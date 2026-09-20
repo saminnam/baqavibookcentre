@@ -28,7 +28,7 @@ const Footer = () => {
 
 
   return (
-    <footer className="w-full md:mt-16 mt-0 relative bg-[url('src/assets/images/bg-pattern/footer-pattern.webp')] bg-cover bg-center bg-no-repeat">
+    <footer className="w-full md:mt-16 mt-10 relative bg-[url('src/assets/images/bg-pattern/footer-pattern.webp')] bg-cover bg-center bg-no-repeat">
       <div className="bg-[#bc8600f5] absolute inset-0 z-10"></div>
       {/* <div class="bg-[#111825fa] absolute inset-0 z-10"></div> */}
       <div className="mx-auto container px-4 pt-16 sm:px-6 lg:px-8 relative z-20">

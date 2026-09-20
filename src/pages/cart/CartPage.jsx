@@ -95,7 +95,12 @@ const CartPage = () => {
                       </span>
 
                       <button
-                        onClick={() => addToCart(product)}
+                        type="button"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          addToCart(product);
+                        }}
                         className="bg-gray-200 cursor-pointer p-1 rounded hover:bg-gray-300"
                       >
                         <Plus size={16} />
