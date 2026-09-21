@@ -75,29 +75,12 @@ const ProductFilter = ({
     setShowFilter(false);
   };
 
-  // ✅ LOGIC: Close drawer when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (drawerRef.current && !drawerRef.current.contains(event.target)) {
-        setShowFilter(false);
-      }
-    };
 
-    if (showFilter) {
-      document.addEventListener("mousedown", handleClickOutside);
-    } else {
-      document.removeEventListener("mousedown", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [showFilter, setShowFilter]);
 
   return (
     <>
       {/* Desktop Filter */}
-      <div className="hidden lg:block bg-white px-5 py-5 border border-gray-200 rounded-lg">
+      <div className="hidden sticky top-10 lg:block overflow-hidden bg-white px-5 py-5 border border-gray-200 rounded-lg">
         <h4 className="text-lg font-semibold md:text-xl">Filter</h4>
         <div className="flex flex-col gap-5 mt-5">
 
@@ -151,7 +134,7 @@ const ProductFilter = ({
               onChange={(e) =>
                 setPriceRange([priceRange[0], Number(e.target.value)])
               }
-              className="w-28 accent-[#e5b236]"
+              className="w-20 accent-[#e5b236]"
             />
 
             {/* Max Price Input */}
@@ -165,7 +148,7 @@ const ProductFilter = ({
                 onChange={(e) =>
                   setPriceRange([priceRange[0], Number(e.target.value) || 0])
                 }
-                className="md:w-16 border w-full border-gray-300 rounded p-1 text-sm"
+                className="md:w-16 w-full border border-gray-300 rounded p-1 text-sm"
               />
             </div>
           </div>

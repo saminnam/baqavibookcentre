@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Home, ShoppingCart, Filter, Store } from "lucide-react";
+import { Home, ShoppingCart, Filter, Store, User } from "lucide-react";
 import { StoreContext } from "../context/StoreContext";
 import { Link } from "react-router-dom";
 import logo from "../assets/images/logo-bg.png";
@@ -38,22 +38,16 @@ const FloatingMenu = () => {
         />
       </Link>
       {/* Filter */}
-      <button
+      {/* <button
         className="flex flex-col items-center gap-1 text-sm transition-all duration-200"
         onClick={() => setShowFilter(true)}
       >
         <Filter size={18} />
         <span className="text-[10px] uppercase font-medium">Filter</span>
-      </button>
+      </button> */}
 
       {/* Profile */}
-      {/* <Link
-        to={"/profile"}
-        className="flex flex-col items-center gap-1 text-sm transition-all duration-200"
-      >
-        <User size={18} />
-        <span className="text-[10px] uppercase font-medium">Profile</span>
-      </Link> */}
+
 
       {/* Cart */}
       <Link
@@ -63,11 +57,10 @@ const FloatingMenu = () => {
         <div className="relative">
           <ShoppingCart size={18} />
           <div
-            className={`cart-badge bg-[#E5B236] text-white ${
-              Object.keys(cartItems).length > 0
+            className={`cart-badge bg-[#E5B236] text-white ${Object.keys(cartItems).length > 0
                 ? "opacity-100 scale-100"
                 : "opacity-0 scale-0"
-            }`}
+              }`}
           >
             {Object.keys(cartItems).length > 0
               ? Object.keys(cartItems).length
@@ -75,6 +68,13 @@ const FloatingMenu = () => {
           </div>
         </div>
         <span className="text-[10px] uppercase font-medium">Cart</span>
+      </Link>
+      <Link
+        to={"/auth"}
+        className="flex flex-col items-center gap-1 text-sm transition-all duration-200"
+      >
+        <User size={18} />
+        <span className="text-[10px] uppercase font-medium">Profile</span>
       </Link>
     </div>
   );

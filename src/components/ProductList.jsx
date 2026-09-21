@@ -101,16 +101,14 @@ const ProductListPage = () => {
 
   return (
     <div className="container mx-auto p-2 md:p-6 content-font">
-      {/* Mobile Filter Button */}
-      {/* <div className="lg:hidden mb-4">
-        <button
-          onClick={() => setShowFilter(true)}
-          className="flex items-center gap-2 bg-[#E5B236] text-white px-4 py-2 rounded-lg hover:bg-[#d49e2e] transition-colors"
-        >
-          <Filter size={20} />
-          <span>Filter</span>
-        </button>
-      </div> */}
+      {/* Floating Filter Button */}
+      <button
+        onClick={() => setShowFilter(true)}
+        className="fixed bottom-20 right-4 z-50 bg-[#E5B236] text-white p-3 rounded-full shadow-lg hover:bg-[#d49e2e] transition-all hover:scale-110"
+        title="Filter"
+      >
+        <Filter size={24} />
+      </button>
 
       <div className="flex lg:flex-row gap-10 flex-col">
         {/* Filter Sidebar - Desktop */}
