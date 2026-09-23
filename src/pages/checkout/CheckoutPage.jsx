@@ -250,7 +250,7 @@ const CheckoutPage = () => {
             </div>
           )}
 
-          <div className="space-y-5">
+          <div className="space-y-5 grid md:grid-cols-2 gap-5">
             {fields.map(({ key, icon: Icon, label, textarea }) => (
               <div key={key}>
                 <label className="text-sm font-medium text-gray-600">{label}</label>
@@ -287,7 +287,7 @@ const CheckoutPage = () => {
         <div className="bg-white rounded-2xl shadow-xl p-8 sticky top-24">
           <h3 className="md:text-xl text-lg font-semibold mb-6 border-b border-gray-300 pb-6 content-font">🧾 Order Summary</h3>
 
-          <div className="h-[40vh] overflow-y-scroll">
+          <div className="max-h-[40vh] h-full overflow-y-scroll">
             {orderProducts.length === 0 ? (
               <p className="text-gray-500 text-center py-4">Your cart is empty</p>
             ) : (

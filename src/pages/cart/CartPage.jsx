@@ -33,24 +33,83 @@ const CartPage = () => {
           </div>
         ) : (
           <div className="bg-white shadow-md rounded-lg">
-            {/* Wrapper to enable horizontal scroll on mobile */}
-            <div className="overflow-x-auto md:overflow-y-auto scrollbar">
-              <div className="min-w-[700px] max-h-[500px]">
-                {/* Cart Header */}
-                <div className="grid grid-cols-6 text-[12px] md:text-[15px] font-semibold bg-gray-100 text-gray-700 p-3">
-                  <p className="col-span-2 text-center">Product</p>
-                  <p className="text-center">Price</p>
-                  <p className="text-center">Offer Price</p>
-                  <p className="text-center">Quantity</p>
-                  <p className="text-center">Action</p>
-                </div>
+            {/* Cart Header - Hidden on mobile, visible on tablet and up */}
+            <div className="hidden md:grid grid-cols-6 text-[15px] font-semibold bg-gray-100 text-gray-700 p-3">
+              <p className="col-span-2 text-center">Product</p>
+              <p className="text-center">Price</p>
+              <p className="text-center">Offer Price</p>
+              <p className="text-center">Quantity</p>
+              <p className="text-center">Action</p>
+            </div>
 
-                {/* Cart Items */}
-                {cartProducts.map((product) => (
-                  <div
-                    key={product._id}
-                    className="grid grid-cols-6 items-center border-t border-gray-300 p-4 hover:bg-gray-50 transition"
-                  >
+            {/* Cart Items - Scrollable on desktop */}
+            <div className="md:max-h-[500px] md:overflow-y-auto scrollbar divide-y divide-gray-200">
+              {cartProducts.map((product) => (
+                <div
+                  key={product._id}
+                  className="p-4 hover:bg-gray-50 transition"
+                >
+                  {/* Mobile Layout - Stacked */}
+                  <div className="md:hidden">
+                    {/* Product Info */}
+                    <div className="flex items-start gap-3 mb-4">
+                      <Link to={`/product/${product.slug}`}>
+                        <img
+                          src={product.image}
+                          alt={product.name}
+                          className="w-16 h-16 object-cover rounded-md border border-gray-300"
+                        />
+                      </Link>
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-[14px] text-gray-800">
+                          {product.name}
+                        </h3>
+                        <div className="flex items-center gap-2 mt-1">
+                          <p className="text-gray-600 text-[12px] line-through">
+                            ₹{product.mrp}
+                          </p>
+                          <p className="text-green-600 font-semibold text-[13px]">
+                            ₹{product.price}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Quantity and Actions */}
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => removeFromCart(product)}
+                          className="bg-gray-200 cursor-pointer p-2 rounded hover:bg-gray-300"
+                        >
+                          <Minus size={16} />
+                        </button>
+                        <span className="text-[14px] font-medium w-8 text-center">
+                          {cartItems[product._id] || 0}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            addToCart(product);
+                          }}
+                          className="bg-gray-200 cursor-pointer p-2 rounded hover:bg-gray-300"
+                        >
+                          <Plus size={16} />
+                        </button>
+                      </div>
+                      <button
+                        onClick={() => removeFromCart(product, true)}
+                        className="text-red-600 cursor-pointer hover:text-red-700 transition"
+                      >
+                        <Trash2 size={18} />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Desktop Layout - Grid */}
+                  <div className="hidden md:grid grid-cols-6 items-center">
                     {/* Product Info */}
                     <div className="col-span-2 flex items-center gap-4">
                       <Link to={`/product/${product.slug}`}>
@@ -61,23 +120,19 @@ const CartPage = () => {
                         />
                       </Link>
                       <div>
-                        <h3 className="font-semibold text-[13px] md:text-[16px] text-gray-800 truncate overflow-hidden whitespace-nowrap w-[120px] md:w-[200px]">
+                        <h3 className="font-semibold text-[16px] text-gray-800 truncate overflow-hidden whitespace-nowrap w-[200px]">
                           {product.name}
                         </h3>
-
-                        {/* <p className="text-sm text-gray-500">
-                        {product.description?.slice(0, 40)}...
-                      </p> */}
                       </div>
                     </div>
 
                     {/* Price */}
-                    <p className="text-center text-gray-600 text-[12px] md:text-[15px]">
+                    <p className="text-center text-gray-600 text-[15px]">
                       ₹{product.mrp}
                     </p>
 
                     {/* Offer Price */}
-                    <p className="text-center text-[12px] md:text-[15px] text-green-600 font-semibold">
+                    <p className="text-center text-[15px] text-green-600 font-semibold">
                       ₹{product.price}
                     </p>
 
@@ -90,7 +145,7 @@ const CartPage = () => {
                         <Minus size={16} />
                       </button>
 
-                      <span className="md:text-[15px] text-[12px] font-medium">
+                      <span className="text-[15px] font-medium">
                         {cartItems[product._id] || 0}
                       </span>
 
@@ -111,14 +166,14 @@ const CartPage = () => {
                     <div className="flex justify-center">
                       <button
                         onClick={() => removeFromCart(product, true)}
-                        className="text-red-600 cursor-pointer  hover:text-red-700 transition"
+                        className="text-red-600 cursor-pointer hover:text-red-700 transition"
                       >
                         <Trash2 size={20} />
                       </button>
                     </div>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
 
             {/* Footer */}
