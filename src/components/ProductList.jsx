@@ -104,7 +104,7 @@ const ProductListPage = () => {
       {/* Floating Filter Button */}
       <button
         onClick={() => setShowFilter(true)}
-        className="fixed bottom-20 right-4 z-50 bg-[#E5B236] text-white p-3 rounded-full shadow-lg hover:bg-[#d49e2e] transition-all hover:scale-110"
+        className="md:hidden block fixed bottom-20 right-4 z-50 bg-[#E5B236] text-white p-3 rounded-full shadow-lg hover:bg-[#d49e2e] transition-all hover:scale-110"
         title="Filter"
       >
         <Filter size={24} />

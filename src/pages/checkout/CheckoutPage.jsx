@@ -21,7 +21,6 @@ const CheckoutPage = () => {
   /* ---------------- CONTEXT ---------------- */
   const { profile, updateProfile } = useProfile();
   const { cartItems, getTotalCartAmount, product_list, clearCart } = useContext(StoreContext);
-
   const { user } = useContext(AuthContext);
 
   /* ---------------- STATE ---------------- */
@@ -39,23 +38,21 @@ const CheckoutPage = () => {
 
 
   const [loading, setLoading] = useState(false);
-  const [useSavedAddress, setUseSavedAddress] = useState(true); // Default to saved address if available
+  const [useSavedAddress, setUseSavedAddress] = useState(false); // Default to new address
 
   /* ---------------- PREFILL FROM PROFILE OR AUTH USER ---------------- */
   useEffect(() => {
-    // Use profile data if available, otherwise use auth user data
-    const dataSource = profile || user;
-    if (dataSource) {
+    // Only prefill if user is authenticated and has saved address
+    if (user && profile && (profile.address || profile.city || profile.postalCode)) {
       setForm({
-        name: dataSource.name || "",
-        email: dataSource.email || "",
-        phone: profile?.phone || user?.phone || "",
-        address: profile?.address || "",
-        city: profile?.city || "",
-        postalCode: profile?.postalCode || "",
+        name: profile.name || "",
+        email: profile.email || "",
+        phone: profile.phone || "",
+        address: profile.address || "",
+        city: profile.city || "",
+        postalCode: profile.postalCode || "",
       });
-      // Set useSavedAddress based on whether profile has complete address
-      setUseSavedAddress(!!(profile?.address && profile?.city && profile?.postalCode && profile?.phone));
+      setUseSavedAddress(true);
     }
   }, [profile, user]);
 
@@ -118,7 +115,8 @@ const CheckoutPage = () => {
 
     setLoading(true);
     try {
-      if (saveAddress) {
+      // Only save address if user is authenticated
+      if (saveAddress && user) {
         await updateProfile(form);
       }
 
@@ -173,8 +171,8 @@ const CheckoutPage = () => {
             <h2 className="text-lg md:text-xl font-semibold content-font">Shipping Details</h2>
           </div>
 
-          {/* Address Selection */}
-          {profile && (profile.address || profile.city || profile.postalCode) && (
+          {/* Address Selection - Only show if user is authenticated and has saved address */}
+          {user && profile && (profile.address || profile.city || profile.postalCode) && (
             <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
               <p className="font-medium text-gray-800 mb-3">Select Shipping Address:</p>
               <div className="space-y-3">
@@ -268,7 +266,7 @@ const CheckoutPage = () => {
               </div>
             ))}
 
-            {!useSavedAddress && (
+            {!useSavedAddress && user && (
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"

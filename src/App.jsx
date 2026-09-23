@@ -10,7 +10,6 @@ import FloatingMenu from "./components/FloatingMenu";
 import Home from "./pages/home/Home";
 import Footer from "./components/Footer";
 import ToastNotification from "./modals/ToastNotification";
-import ProtectedRoute from "./components/ProtectedRoute";
 import { StoreContext } from "./context/StoreContext";
 import { useContext } from "react";
 
@@ -54,24 +53,6 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/auth" element={<AuthPage />} />
-          <Route
-            path="/checkout"
-            element={
-              <ProtectedRoute>
-                <CheckoutPage />
-              </ProtectedRoute>
-            }
-          />
-
-          {/* <Route
-            path="/profile"
-            element={
-              <ProtectedRoute>
-                <ProfilePage />
-              </ProtectedRoute>
-            }
-          /> */}
-
           <Route path="about-us" element={<AboutPage />} />
           <Route path="/products" element={<ProductPage />} />
           <Route path="/product/:slug" element={<ProductDetail />} />

@@ -34,6 +34,11 @@ export const ProfileProvider = ({ children }) => {
       return res.data;
     } catch (error) {
       console.error("Failed to update profile:", error.message);
+      // Don't throw error for unauthenticated users - just log it
+      if (error.response?.status === 401) {
+        console.log("Cannot update profile - user not authenticated");
+        return null;
+      }
       throw error;
     }
   };
@@ -44,6 +49,11 @@ export const ProfileProvider = ({ children }) => {
       setProfile(null);
     } catch (error) {
       console.error("Failed to delete profile:", error.message);
+      // Don't throw error for unauthenticated users
+      if (error.response?.status === 401) {
+        console.log("Cannot delete profile - user not authenticated");
+        return;
+      }
       throw error;
     }
   };
