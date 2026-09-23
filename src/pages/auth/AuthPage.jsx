@@ -37,7 +37,7 @@ const AuthPage = () => {
   };
 
   return (
-    <div className="min-h-screen content-font flex items-center justify-center bg-gradient-to-br from-yellow-100 to-yellow-300 p-4">
+    <div className="min-h-screen content-font flex items-center justify-center p-4">
       <div className="bg-white rounded-lg shadow-xl w-full max-w-md p-8">
         <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">Welcome to Baqavi Book Centre</h2>
 
