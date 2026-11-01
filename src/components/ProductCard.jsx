@@ -14,6 +14,7 @@ const ProductCard = ({ product }) => {
           <img
             src={product.image}
             alt={product.name}
+            loading="lazy"
             className={`w-full h-48 object-cover rounded-md mb-3 transition ${
               isHidden ? "filter blur-[2px] opacity-70 scale-[1.02]" : ""
             }`}

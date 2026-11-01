@@ -83,6 +83,7 @@ const CategorySwiperSection = () => {
                           <img
                             src={product.image}
                             alt={product.name}
+                            loading="lazy"
                             className={`w-full transition-transform duration-300 object-cover rounded ${
                               product?.status === "inactive"
                                 ? "blur-[2px] opacity-70 scale-[1.02]"

@@ -163,6 +163,16 @@ const StoreContextProvider = (props) => {
     return total;
   };
 
+  // Memoize category order map for performance
+  const categoryOrderMap = useMemo(() => {
+    if (!Array.isArray(categories) || categories.length === 0) return {};
+    return categories.reduce((acc, cat, index) => {
+      const catName = typeof cat === 'object' ? cat.name : cat;
+      acc[catName] = index;
+      return acc;
+    }, {});
+  }, [categories]);
+
   // 3️⃣ FILTERING & SEARCHING (Client-side)
   const filteredProducts = useMemo(() => {
     let filtered = [...products];
@@ -201,16 +211,10 @@ const StoreContextProvider = (props) => {
     }
 
     // Sort by category order if no specific category is selected
-    if (selectedCategory === "All" && Array.isArray(categories) && categories.length > 0) {
-      const categoryOrder = categories.reduce((acc, cat, index) => {
-        const catName = typeof cat === 'object' ? cat.name : cat;
-        acc[catName] = index;
-        return acc;
-      }, {});
-
+    if (selectedCategory === "All" && Object.keys(categoryOrderMap).length > 0) {
       filtered.sort((a, b) => {
-        const orderA = categoryOrder[a.category] ?? 999;
-        const orderB = categoryOrder[b.category] ?? 999;
+        const orderA = categoryOrderMap[a.category] ?? 999;
+        const orderB = categoryOrderMap[b.category] ?? 999;
         return orderA - orderB;
       });
     }
@@ -222,7 +226,7 @@ const StoreContextProvider = (props) => {
     }
 
     return filtered;
-  }, [products, selectedCategory, priceRange, sortOrder, minStarRating, filterSearch, categories]);
+  }, [products, selectedCategory, priceRange, sortOrder, minStarRating, filterSearch, categoryOrderMap]);
 
 
 
