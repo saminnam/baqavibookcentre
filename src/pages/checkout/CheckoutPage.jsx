@@ -287,7 +287,7 @@ const CheckoutPage = () => {
         <div className="bg-white rounded-2xl shadow-xl p-8 sticky top-24">
           <h3 className="md:text-xl text-lg font-semibold mb-6 border-b border-gray-300 pb-6 content-font">🧾 Order Summary</h3>
 
-          <div className="max-h-[40vh] h-full overflow-y-scroll">
+          <div className="md:max-h-[40vh] h-full overflow-y-scroll">
             {orderProducts.length === 0 ? (
               <p className="text-gray-500 text-center py-4">Your cart is empty</p>
             ) : (
