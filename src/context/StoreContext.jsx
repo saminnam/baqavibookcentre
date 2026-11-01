@@ -193,13 +193,27 @@ const StoreContextProvider = (props) => {
         const authorNoSpace = (p.author || "")
           .toLowerCase()
           .replace(/\s+/g, "");
-        
+
         return productNameNoSpace.includes(searchTermNoSpace) ||
                categoryNoSpace.includes(searchTermNoSpace) ||
                authorNoSpace.includes(searchTermNoSpace);
       });
     }
 
+    // Sort by category order if no specific category is selected
+    if (selectedCategory === "All" && Array.isArray(categories) && categories.length > 0) {
+      const categoryOrder = categories.reduce((acc, cat, index) => {
+        const catName = typeof cat === 'object' ? cat.name : cat;
+        acc[catName] = index;
+        return acc;
+      }, {});
+
+      filtered.sort((a, b) => {
+        const orderA = categoryOrder[a.category] ?? 999;
+        const orderB = categoryOrder[b.category] ?? 999;
+        return orderA - orderB;
+      });
+    }
 
     if (sortOrder === "low-to-high") {
       filtered.sort((a, b) => a.price - b.price);
@@ -208,7 +222,7 @@ const StoreContextProvider = (props) => {
     }
 
     return filtered;
-  }, [products, selectedCategory, priceRange, sortOrder, minStarRating, filterSearch]);
+  }, [products, selectedCategory, priceRange, sortOrder, minStarRating, filterSearch, categories]);
 
 
 
