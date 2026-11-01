@@ -10,8 +10,8 @@ import "swiper/css";
 import "swiper/css/navigation";
 
 const CategorySwiperSection = () => {
-  // ✅ Logic: Use products from StoreContext to avoid duplicate API calls
-  const { products, loading, addToCart } = useContext(StoreContext);
+  // ✅ Logic: Use products and categories from StoreContext
+  const { products, loading, addToCart, categories } = useContext(StoreContext);
 
   // ✅ Logic: Prevent rendering swiper before data is ready
   if (loading || !products || products.length === 0)
@@ -21,12 +21,14 @@ const CategorySwiperSection = () => {
       </div>
     );
 
-  // ✅ Logic: Get unique categories from API data
-  const categories = [...new Set(products.map((p) => p.category))];
+  // ✅ Logic: Use categories from API (sorted by order) or fallback to extracted categories
+  const categoryList = Array.isArray(categories) && categories.length > 0
+    ? categories.map(cat => typeof cat === 'object' ? cat.name : cat)
+    : [...new Set(products.map((p) => p.category))];
 
   return (
     <section className="px-5 md:px-8 space-y-12">
-      {categories.map((category, index) => {
+      {categoryList.map((category, index) => {
         // ✅ Logic: Filter products based on fetched data
         const categoryProducts = products.filter(
           (p) => p.category === category,

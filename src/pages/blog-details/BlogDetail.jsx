@@ -4,6 +4,7 @@ import { Clock } from "lucide-react";
 import axios from "axios";
 import GlobalHero from "../../components/GlobalHero";
 import axiosInstance from "../../api/axiosInstance";
+import ShareButton from "../../components/ShareButton";
 
 const BlogDetail = () => {
   const { slug } = useParams();
@@ -37,6 +38,7 @@ const BlogDetail = () => {
   }
 
   const [day, month] = blog.date?.split(" ") || [];
+  const blogUrl = `${window.location.origin}/blog/${blog.slug}`;
 
   return (
     <>
@@ -62,6 +64,10 @@ const BlogDetail = () => {
           <span className="font-medium">
             {day} {month}
           </span>
+
+          <div className="ml-auto">
+            <ShareButton url={blogUrl} title={blog.title} />
+          </div>
         </div>
 
         <h1 className="text-3xl font-bold mt-4">{blog.title}</h1>

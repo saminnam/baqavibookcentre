@@ -6,6 +6,7 @@ import "swiper/css/navigation";
 import { ShoppingCart } from "lucide-react";
 import RelatedProducts from "../../components/RelatedProducts";
 import GlobalHero from "../../components/GlobalHero";
+import ShareButton from "../../components/ShareButton";
 
 const ProductDetail = () => {
   const { slug } = useParams();
@@ -36,6 +37,8 @@ const ProductDetail = () => {
 
   if (!product)
     return <div className="text-center mt-10">Product not found</div>;
+
+  const productUrl = `${window.location.origin}/product/${product.slug}`;
 
   return (
     <>
@@ -198,6 +201,7 @@ const ProductDetail = () => {
                     : "Add to Cart"}
                 </span>
               </button>
+              <ShareButton url={productUrl} title={product.name} />
             </div>
           </div>
         </div>

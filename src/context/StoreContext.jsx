@@ -55,9 +55,12 @@ const StoreContextProvider = (props) => {
   const fetchCategories = async () => {
     try {
       const response = await axiosInstance.get("/categories");
-      const categoriesData = response.data || [];
+      const categoriesData = response.data.categories || response.data || [];
+
       if (Array.isArray(categoriesData) && categoriesData.length > 0) {
-        setCategories(categoriesData);
+        // Sort categories by order field
+        const sortedCategories = categoriesData.sort((a, b) => (a.order || 0) - (b.order || 0));
+        setCategories(sortedCategories);
       } else {
         setCategories([...new Set(products.map((product) => product.category).filter(Boolean))]);
       }
