@@ -60,13 +60,24 @@ const StoreContextProvider = (props) => {
       if (Array.isArray(categoriesData) && categoriesData.length > 0) {
         // Sort categories by order field
         const sortedCategories = categoriesData.sort((a, b) => (a.order || 0) - (b.order || 0));
-        setCategories(sortedCategories);
+
+        // Filter out categories that have no products
+        const categoriesWithProducts = sortedCategories.filter(cat => {
+          const catName = typeof cat === 'object' ? cat.name : cat;
+          return products.some(p => p.category === catName);
+        });
+
+        setCategories(categoriesWithProducts);
       } else {
-        setCategories([...new Set(products.map((product) => product.category).filter(Boolean))]);
+        // Fallback: only include categories that have products
+        const categoriesWithProducts = [...new Set(products.map((product) => product.category).filter(Boolean))];
+        setCategories(categoriesWithProducts);
       }
     } catch (error) {
       console.error("Failed to fetch categories:", error);
-      setCategories([...new Set(products.map((product) => product.category).filter(Boolean))]);
+      // Fallback: only include categories that have products
+      const categoriesWithProducts = [...new Set(products.map((product) => product.category).filter(Boolean))];
+      setCategories(categoriesWithProducts);
     }
   };
 
