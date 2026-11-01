@@ -1,14 +1,12 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { StoreContext } from "../context/StoreContext";
 import { Link, useSearchParams } from "react-router-dom";
-import { Plus, Star, ChevronLeft, ChevronRight, Filter } from "lucide-react";
+import { Plus, Star, Filter } from "lucide-react";
 import ProductCardSkeleton from "../skeleton-loader/ProductCardSkeleton";
 import ProductFilter from "./ProductFilter";
 
 const ProductListPage = () => {
   const [searchParams] = useSearchParams();
-  const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 40;
 
   const {
     filteredProducts,
@@ -28,30 +26,6 @@ const ProductListPage = () => {
     loading,
   } = useContext(StoreContext);
 
-  // ✅ Pagination logic (must come AFTER filteredProducts is available)
-  const indexOfLastProduct = currentPage * productsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = filteredProducts.slice(
-    indexOfFirstProduct,
-    indexOfLastProduct,
-  );
-
-  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
-
-  const handleNext = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage((prev) => prev + 1);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  };
-
-  const handlePrev = () => {
-    if (currentPage > 1) {
-      setCurrentPage((prev) => prev - 1);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  };
-
   // ✅ Handle query params
   useEffect(() => {
     const search = searchParams.get("search");
@@ -70,7 +44,7 @@ const ProductListPage = () => {
       setFilterSearch(search);
     }
 
-    // Sync category + reset pagination.
+    // Sync category
     if (category) {
       setSelectedCategory(category);
     } else {
@@ -91,8 +65,6 @@ const ProductListPage = () => {
     if (sort) {
       setSortOrder(sort);
     }
-
-    setCurrentPage(1);
   }, [searchParams, setSelectedCategory, setFilterSearch, setPriceRange, setMinStarRating, setSortOrder]);
 
 
@@ -132,8 +104,8 @@ const ProductListPage = () => {
               Array.from({ length: 15 }).map((_, i) => (
                 <ProductCardSkeleton key={i} />
               ))
-            ) : currentProducts.length > 0 ? (
-              currentProducts.map((product) => {
+            ) : filteredProducts.length > 0 ? (
+              filteredProducts.map((product) => {
                 const isHidden = product?.status === "inactive";
 
                 return (
@@ -262,45 +234,6 @@ const ProductListPage = () => {
               </p>
             )}
           </div>
-
-          {/* Pagination Controls */}
-          {!loading && filteredProducts.length > productsPerPage && (
-            <div className="flex justify-center items-center mt-6 md:mb-0 mb-20 md:mt-10 gap-4">
-              {/* Previous Button */}
-              <button
-                onClick={handlePrev}
-                disabled={currentPage === 1}
-                className={`flex items-center gap-2 px-2 md:px-4 py-2 border rounded-full transition-all ${
-                  currentPage === 1
-                    ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                    : "bg-white hover:bg-[#e5b236] cursor-pointer hover:text-white text-gray-700"
-                }`}
-              >
-                <ChevronLeft className="w-5 h-5" />
-                <span className="hidden sm:inline">Prev</span>
-              </button>
-
-              {/* Page Info */}
-              <span className="text-gray-700 text-sm md:text-lg font-medium">
-                Page <span className="text-[#e5b236]">{currentPage}</span> of{" "}
-                {totalPages}
-              </span>
-
-              {/* Next Button */}
-              <button
-                onClick={handleNext}
-                disabled={currentPage === totalPages}
-                className={`flex items-center gap-2 px-2 md:px-4 py-2 border rounded-full transition-all ${
-                  currentPage === totalPages
-                    ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                    : "bg-white hover:bg-[#e5b236] cursor-pointer hover:text-white text-gray-700"
-                }`}
-              >
-                <span className="hidden sm:inline">Next</span>
-                <ChevronRight className="w-5 h-5" />
-              </button>
-            </div>
-          )}
         </div>
       </div>
 
